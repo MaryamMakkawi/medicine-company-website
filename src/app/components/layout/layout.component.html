@@ -1,0 +1,216 @@
+<div class="page-content position-relative">
+  <!-- Navbar menu -->
+
+  <nav class="navbar-menu">
+    <a class="website-name" [routerLink]="['home']">Aphamea</a>
+    <div class="nav-right-side d-flex">
+      <ul class="navbar-links">
+        <li>
+          <a [routerLink]="['about']" routerLinkActive="active-link" class="link"
+            >about</a
+          >
+        </li>
+        <li>
+          <a [routerLink]="['products']" routerLinkActive="active-link" class="link"
+            >our products</a
+          >
+        </li>
+        <li>
+          <a [routerLink]="['contacts']" routerLinkActive="active-link" class="link"
+            >contacts</a
+          >
+        </li>
+      </ul>
+      <div class="user-profile">
+        <div
+          class="dropdown-toggle"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          <img
+            class="user-img"
+            src="{{
+              user.imgUrl || '../../../assets/images/avatar-default.jpg'
+            }}"
+          />
+        </div>
+        <ul class="dropdown-menu profile-dropdown p-2">
+          <div class="d-flex align-items-center mb-2">
+            <img
+              class="user-img"
+              src="{{
+                user.imgUrl || '../../../assets/images/avatar-default.jpg'
+              }}"
+            />
+            <div class="user-info">
+              <h5>{{ user.name || "User Name" }}</h5>
+              <span>view profile</span>
+            </div>
+          </div>
+          <li><a class="dropdown-item">Action</a></li>
+          <li><a class="dropdown-item">Another action</a></li>
+          <li><a class="dropdown-item">Something else here</a></li>
+          <li><hr class="dropdown-divider" /></li>
+          <li>
+            <a class="dropdown-item logout-btn" (click)="onLogOut()">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div
+      class="navbar-icon"
+      data-bs-toggle="offcanvas"
+      data-bs-target="#offcanvasExample"
+      aria-controls="offcanvasExample"
+    >
+      <span class="icon-lines"></span>
+    </div>
+  </nav>
+
+  <!-- Sidebar -->
+
+  <div
+    class="offcanvas offcanvas-start"
+    tabindex="-1"
+    id="offcanvasExample"
+    aria-labelledby="offcanvasExampleLabel"
+  >
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasExampleLabel">
+        Aphamea Company
+      </h5>
+      <button
+        type="button"
+        class="btn-close text-reset"
+        data-bs-dismiss="offcanvas"
+        aria-label="Close"
+      ></button>
+    </div>
+    <div class="offcanvas-body">
+      <div class="user-profile">
+        <div class="user-img">
+          <img
+            src="{{
+              user.imgUrl || '../../../assets/images/avatar-default.jpg'
+            }}"
+          />
+        </div>
+        <div>
+          <h5>{{ user.name || "User Name" }}</h5>
+          <span>View Profile</span>
+        </div>
+      </div>
+      <ul
+        class="d-flex flex-column border-0"
+        aria-labelledby="dropdownMenuButton"
+      >
+        <li><a class="link">about</a></li>
+        <li><a class="link">projects</a></li>
+        <li><a class="link">contacts</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Pages Content -->
+
+  <div class="page-content-container">
+    <router-outlet></router-outlet>
+  </div>
+
+  <!-- Footer -->
+
+  <footer class="footer-section">
+    <div class="container f-container">
+      <div class="footer-content pt-5 pb-5">
+        <div class="row">
+          <div class="col-xl-4 col-lg-4 mb-50">
+            <div class="footer-widget footer-heading">
+              <div class="footer-logo">
+                <a [routerLink]="['home']"
+                  ><img
+                    src="../../../assets/images/logo-aphamea-3.png"
+                    class="img-fluid"
+                    alt="logo"
+                /></a>
+              </div>
+              <div class="footer-text">
+                <p>
+                  Lorem ipsum dolor sit amet, consec tetur adipisicing elit, sed
+                  do eiusmod tempor incididuntut consec tetur adipisicing
+                  elit,Lorem ipsum dolor sit amet.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-4 col-lg-4 col-md-6 mb-30">
+            <div class="footer-widget">
+              <div class="footer-widget-heading">
+                <h3>Useful Links</h3>
+              </div>
+              <ul class="useful-links">
+                <li><a routerLinkActive="active-link" [routerLink]="['home']">Home</a></li>
+                <li><a routerLinkActive="active-link" [routerLink]="['about']">about</a></li>
+                <li><a>services</a></li>
+                <li><a>portfolio</a></li>
+                <li><a>Contact</a></li>
+                <li><a>About us</a></li>
+                <li><a>Our Services</a></li>
+                <li><a>Expert Team</a></li>
+                <li><a>Contact us</a></li>
+                <li><a>Latest News</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-xl-4 col-lg-4 col-md-6 mb-50">
+            <div class="footer-widget">
+              <div class="footer-widget-heading">
+                <h3>Subscribe</h3>
+              </div>
+              <div class="footer-text mb-25">
+                <p>
+                  Don’t miss to subscribe to our new feeds, kindly fill the form
+                  below.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="copyright-area">
+      <div class="container">
+        <div class="row">
+          <div class="col-xl-6 col-lg-6 text-center text-lg-left">
+            <div class="copyright-text">
+              <p>
+                Copyright &copy; {{ currentYear }}, All Right Reserved
+                <a [routerLink]="['home']">Aphamea</a>
+              </p>
+            </div>
+          </div>
+          <div class="col-xl-6 col-lg-6 d-none d-lg-block text-right">
+            <div class="footer-menu">
+              <ul>
+                <li><a [routerLink]="['home']">Home</a></li>
+                <li><a>Terms</a></li>
+                <li><a>Privacy</a></li>
+                <li><a>Policy</a></li>
+                <li><a>Contact</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back To Top Button -->
+
+  <div
+    class="circle-to-top"
+    [ngClass]="{ 'show-scrollTop': windowScrolled }"
+    (click)="scrollToTop()"
+  >
+    <i class="bi bi-chevron-up"></i>
+  </div>
+</div>

@@ -1,0 +1,88 @@
+@import "~swiper/css";
+@import "~swiper/css/pagination";
+@import "~swiper/css/navigation";
+
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  // text-align: center;
+  // font-size: 18px;
+  // background: #fff;
+
+  /* Center slide text vertically */
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.65;
+    background: rgb(20, 33, 43);
+  }
+  &.freeMode-slider {
+    &::before {
+      opacity: 0;
+    }
+  }
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 600px;
+  object-fit: cover;
+}
+.swiper-button-next,
+.swiper-button-prev,
+.swiper-pagination {
+  display: none;
+}
+.freeMode-swiper-control {
+  .swiper-button-next,
+  .swiper-button-prev {
+    display: block;
+    &::after {
+      color: #3c3b96;
+      background: #fff;
+      padding: 15px 20px;
+      border-radius: 50%;
+      font-size: 20px;
+      font-weight: bold;
+      margin: -13px;
+    }
+  }
+}
+.card-swiper.swiper-slide {
+  width: fit-content;
+  &.swiper-3d {
+    border-radius: 20px !important;
+  }
+  &::before {
+    display: none;
+  }
+}
+.swiper-3d .swiper-cube-shadow,
+.swiper-3d .swiper-slide,
+.swiper-3d .swiper-slide-shadow,
+.swiper-3d .swiper-slide-shadow-bottom,
+.swiper-3d .swiper-slide-shadow-left,
+.swiper-3d .swiper-slide-shadow-right,
+.swiper-3d .swiper-slide-shadow-top,
+.swiper-3d .swiper-wrapper {
+  border-radius: 20px !important;
+}

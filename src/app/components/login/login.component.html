@@ -1,0 +1,309 @@
+<div
+  class="container"
+  [ngClass]="toggleLoginActive ? 'left-panel-active' : 'right-panel-active'"
+>
+  <div class="form-container sign-up-container">
+    <form
+      [formGroup]="signUpForm"
+      class="px-1 px-sm-2 px-md-3 px-lg-5"
+      (ngSubmit)="onSignup(signUpForm)"
+    >
+      <h3>Create New Account</h3>
+      <div class="w-100 my-3">
+        <input
+          type="text"
+          formControlName="name"
+          name="name"
+          class="form-control"
+          placeholder="Name"
+        />
+        <div
+          class="text-danger form-text fw-bold mx-1 float-start"
+          *ngIf="
+            !signUpForm.get('name')?.valid && signUpForm.get('name')?.touched
+          "
+        >
+          <span *ngIf="nameErrors?.['required']"> Username is required</span>
+          <span *ngIf="nameErrors?.['maxlength']">
+            maximum must be (
+            <span class="fs-15">
+              {{nameErrors?.['maxlength']?.['requiredLength']}}</span
+            >
+            ) letters At Most!
+          </span>
+        </div>
+      </div>
+
+      <div class="w-100 mb-3">
+        <input
+          type="email"
+          formControlName="email"
+          name="email"
+          class="form-control"
+          placeholder="Email"
+        />
+        <div
+          class="text-danger form-text fw-bold mx-1 float-start"
+          *ngIf="
+            !signUpForm.get('email')?.valid && signUpForm.get('email')?.touched
+          "
+        >
+          <span *ngIf="emailErrors?.['required']"> Email is required</span>
+          <span *ngIf="emailErrors?.['email']"> must be a valid email </span>
+        </div>
+      </div>
+
+      <div class="w-100 mb-3">
+        <input
+          type="password"
+          formControlName="password"
+          name="password"
+          class="form-control"
+          placeholder="Password"
+        />
+        <div
+          class="text-danger form-text fw-bold mx-1 float-start"
+          *ngIf="
+            !signUpForm.get('password')?.valid &&
+            signUpForm.get('password')?.touched
+          "
+        >
+          <span *ngIf="passwordErrors?.['required']">
+            Password is required</span
+          >
+          <span *ngIf="passwordErrors?.['maxlength']">
+            maximum must be (
+            <span class="fs-15">
+              {{passwordErrors?.['maxlength']?.['requiredLength'] }}</span
+            >
+            ) letters At Most!
+          </span>
+          <span *ngIf="passwordErrors?.['minlength']">
+            minimum must be (
+            <span class="fs-15">
+              {{passwordErrors?.['minlength']?.['requiredLength'] }}</span
+            >
+            ) letters At Least!
+          </span>
+        </div>
+      </div>
+      <button
+        class="submit-btn sign-btn"
+        type="submit"
+        [disabled]="!signUpForm.valid"
+        [style.opacity]="!signUpForm.valid ? '0.7' : '1'"
+      >
+        Sign Up
+      </button>
+      <!-- Start Loading Spinner During Authentication Validation -->
+      <div *ngIf="isLoading" class="lds-ripple mt-3">
+        <div></div>
+        <div></div>
+      </div>
+      <!-- End Loading Spinner During Authentication Validation -->
+    </form>
+  </div>
+
+  <div class="form-container sign-in-container">
+    <form
+      [formGroup]="signInForm"
+      class="px-1 px-sm-2 px-md-3 px-lg-5"
+      (ngSubmit)="onSignin(signInForm)"
+    >
+      <h2>Sign in</h2>
+      <div class="social-container d-flex">
+        <a (click)="signinWithFacbook()" class="social"><i class="bi bi-facebook"></i></a>
+        <a (click)="signinGoogle()"
+          ><img src="../assets/images/google.svg"
+        /></a>
+      </div>
+      <span class="mb-2">or use your account</span>
+      <div class="w-100 mb-3">
+        <input
+          type="email"
+          formControlName="email"
+          name="email"
+          class="form-control"
+          placeholder="Email"
+        />
+        <div
+          class="text-danger form-text fw-bold mx-1 float-start"
+          *ngIf="
+            !signInForm.get('email')?.valid && signInForm.get('email')?.touched
+          "
+        >
+          <span *ngIf="signinEmailErrors?.['required']">
+            Email is required</span
+          >
+          <span *ngIf="signinEmailErrors?.['email']">
+            must be a valid email
+          </span>
+        </div>
+      </div>
+
+      <div class="w-100 mb-3">
+        <input
+          type="password"
+          formControlName="password"
+          name="password"
+          class="form-control"
+          placeholder="Password"
+        />
+        <div
+          class="text-danger form-text fw-bold mx-1 float-start"
+          *ngIf="
+            !signInForm.get('password')?.valid &&
+            signInForm.get('password')?.touched
+          "
+        >
+          <span *ngIf="signinPasswordErrors?.['required']">
+            Password is required</span
+          >
+          <span *ngIf="signinPasswordErrors?.['maxlength']">
+            maximum must be (
+            <span class="fs-15">
+              {{signinPasswordErrors?.['maxlength']?.['requiredLength'] }}</span
+            >
+            ) letters At Most!
+          </span>
+          <span *ngIf="signinPasswordErrors?.['minlength']">
+            minimum must be (
+            <span class="fs-15">
+              {{signinPasswordErrors?.['minlength']?.['requiredLength'] }}</span
+            >
+            ) letters At Least!
+          </span>
+        </div>
+      </div>
+
+      <a
+        class="forgot-pass-link"
+        data-bs-toggle="modal"
+        data-bs-target="#resetPasswordModal"
+        >Forgot your password?</a
+      >
+      <button
+        class="submit-btn sign-btn"
+        type="submit"
+        [disabled]="!signInForm.valid"
+        [style.opacity]="!signInForm.valid ? '0.7' : '1'"
+      >
+        Sign In
+      </button>
+
+      <!-- Start Loading Spinner During Authentication Validation -->
+      <div *ngIf="isLoading" class="lds-ripple mt-3">
+        <div></div>
+        <div></div>
+      </div>
+      <!-- End Loading Spinner During Authentication Validation -->
+    </form>
+  </div>
+  <div class="overlay-container">
+    <div class="overlay">
+      <div class="overlay-panel overlay-left px-1 px-sm-2 px-md-3 px-lg-5">
+        <h3>Welcome Back!</h3>
+        <p>
+          if you have account keep connected with us please login with your
+          personal info
+        </p>
+        <button
+          class="ghost sign-btn"
+          (click)="toggleLoginActive = !toggleLoginActive"
+        >
+          Sign In
+        </button>
+      </div>
+      <div class="overlay-panel overlay-right px-1 px-sm-2 px-md-3 px-lg-5">
+        <h3>Hey!</h3>
+        <p>
+          To get a new account, enter your personal details and start journey
+          with us
+        </p>
+        <button
+          class="ghost sign-btn"
+          (click)="toggleLoginActive = !toggleLoginActive"
+        >
+          Sign Up
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Reset password modal -->
+
+<div
+  class="modal fade"
+  id="resetPasswordModal"
+  tabindex="-1"
+  aria-labelledby="resetPasswordModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="resetPasswordModalLabel">Reset Password</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+
+      <form
+        [formGroup]="resetPasswordForm"
+        (ngSubmit)="onResetPassword(resetPasswordForm)"
+        class="p-0"
+      >
+        <div class="modal-body w-75 text-start">
+          <div class="my-2">
+            <label for="email" class="form-label">
+              Please Give Us Your Email:
+            </label>
+            <input
+              type="email"
+              formControlName="email"
+              name="email"
+              class="form-control"
+              placeholder="Email"
+            />
+            <div
+              class="text-danger form-text fw-bold mx-1 float-start"
+              *ngIf="
+                !resetPasswordForm.get('email')?.valid &&
+                resetPasswordForm.get('email')?.touched
+              "
+            >
+              <span *ngIf="resetPasswordFormErrors?.['required']">
+                Email is required</span
+              >
+              <span *ngIf="resetPasswordFormErrors?.['email']">
+                must be a valid email
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer w-100">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="!resetPasswordForm.valid"
+            [style.opacity]="!resetPasswordForm.valid ? '0.7' : '1'"
+            data-bs-dismiss="modal"
+          >
+            Send
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

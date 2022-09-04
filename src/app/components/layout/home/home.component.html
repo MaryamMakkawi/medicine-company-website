@@ -1,0 +1,194 @@
+<!-- landing section -->
+
+<div class="landing position-relative">
+  <swiper
+    [centeredSlides]="true"
+    [speed]="1000"
+    [loop]="true"
+    [spaceBetween]="0"
+    [autoplay]="{
+      delay: 5000,
+      disableOnInteraction: false
+    }"
+    class="mySwiper"
+  >
+    <ng-template *ngFor="let slide of [1, 2, 3]" swiperSlide>
+      <div class="banner-shapes">
+        <div class="one"></div>
+        <div class="two"></div>
+        <div class="three"></div>
+      </div>
+      <img src="./../../../../assets/images/slick{{ slide }}.jpg"
+    /></ng-template>
+  </swiper>
+
+  <ngx-typed-js
+    [loop]="true"
+    [typeSpeed]="100"
+    [smartBackspace]="true"
+    [backSpeed]="50"
+    [showCursor]="true"
+    [strings]="['amazing.', 'amtazia.', 'amtholyy.']"
+    class="landing-typed-string"
+  >
+    <h5 class="promo-text">Confidence and Efficiency</h5>
+    <h1 class="fw-bold">aphamea company&reg;</h1>
+    <span class="typing"></span>
+  </ngx-typed-js>
+</div>
+
+<!-- offer cards section -->
+
+<div class="container">
+  <div class="section">
+    <div class="head-section">
+      <h2 class="main-title">Offers</h2>
+    </div>
+    <swiper
+      [effect]="'coverflow'"
+      [grabCursor]="true"
+      [centeredSlides]="true"
+      [slidesPerView]="'auto'"
+      [initialSlide]="1"
+      [lazy]="true"
+      [coverflowEffect]="{
+        rotate: 50,
+        stretch: 0,
+        depth: 100,
+        modifier: 1,
+        slideShadows: true
+      }"
+      [pagination]="true"
+      class="mySwiper cards-swiper"
+    >
+      <ng-template
+        class="card-swiper"
+        *ngFor="let slide of [1, 2, 3, 4, 5, 6]"
+        swiperSlide
+      >
+        <div class="cards-container">
+          <div class="offer-card">
+            <div class="contentBx">
+              <h2 class="mb-3">Offer Name</h2>
+              <div class="size">
+                <h3 class="my-2">medicine :</h3>
+                <span>7</span>
+                <span>8</span>
+                <span>9</span>
+                <span>10</span>
+              </div>
+              <div class="color">
+                <h3 class="my-2">type :</h3>
+                <span>1</span>
+                <span>2</span>
+                <span>3</span>
+              </div>
+              <button
+                class="btn-primary custom-btn my-2 mx-auto"
+                data-bs-toggle="modal"
+                data-bs-target="#offerDetailsModal"
+              >
+                <span class="pe-1">Find out</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </swiper>
+  </div>
+</div>
+
+<!-- articales section -->
+
+<div class="container">
+  <div class="section">
+    <div class="head-section">
+      <h2 class="main-title">Articales</h2>
+    </div>
+    <swiper
+      [slidesPerView]="3"
+      [spaceBetween]="20"
+      [slidesPerGroup]="3"
+      [loop]="true"
+      [loopFillGroupWithBlank]="true"
+      [pagination]="{
+        clickable: true
+      }"
+      [navigation]="true"
+      class="mySwiper freeMode-swiper-control"
+    >
+      <ng-template
+        class="freeMode-slider"
+        *ngFor="let slide of [1, 2, 3, 4, 5, 6]"
+        swiperSlide
+      >
+        <div>
+          <a class="artical-card mb-3">
+            <div>
+              <h1>Vitamin</h1>
+              <p>
+                Vitamins and minerals, such as iron, calcium and vitamin C, are
+                essential nutrients that your body needs in small amounts to
+                work properly.
+              </p>
+              <div class="date">
+                {{ currentDay }} / {{ currentDate }} / {{ currentYear }}
+              </div>
+            </div>
+          </a>
+        </div>
+      </ng-template>
+    </swiper>
+<!-- offer details modal -->
+
+<div
+  class="modal fade"
+  id="offerDetailsModal"
+  tabindex="-1"
+  aria-labelledby="offerDetailsModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered offer-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="offerDetailsModalLabel">offer details</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+
+      <div class="modal-body">
+        <table class="table offer-table table-sm table-responsive">
+          <thead>
+            <tr>
+              <th scope="col">name</th>
+              <th scope="col">public price</th>
+              <th scope="col">net price</th>
+              <th scope="col">number</th>
+              <th scope="col">bonus</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]">
+              <td>this is for demo</td>
+              <td>this is for demo</td>
+              <td>this is for demo</td>
+              <td>this is for demo</td>
+              <td>this is for demo</td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
+        <button type="submit" class="btn btn-primary">Send</button>
+      </div>
+    </div>
+  </div>
+</div>
