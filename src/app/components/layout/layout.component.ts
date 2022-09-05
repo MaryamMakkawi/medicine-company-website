@@ -1,5 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { User } from 'src/app/interfaces/user.interface';
+import { User } from 'src/app/interfaces/user.model';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -28,6 +28,6 @@ export class LayoutComponent implements OnInit {
     window.scrollTo(0, 0);
   }
   onLogOut() {
-    this.auth.logOutAuth();
+    this.auth.logout();
   }
 }

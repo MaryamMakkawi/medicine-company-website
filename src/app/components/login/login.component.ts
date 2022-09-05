@@ -1,21 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import {
+  AbstractControlOptions,
   FormBuilder,
   FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
 
-import {
-  AngularFirestore,
-  AngularFirestoreDocument,
-  AngularFirestoreCollection,
-} from '@angular/fire/compat/firestore';
-
-import { User } from 'src/app/interfaces/user.interface';
+import { User } from 'src/app/interfaces/user.model';
 import { NotifierService } from '../../services/notifier.service';
-import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { MustMatch } from '../../helpers/must-match.validator';
 
 @Component({
   selector: 'app-login',
@@ -24,33 +19,64 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class LoginComponent implements OnInit {
   toggleLoginActive: boolean = true;
+  toggleCompleteInfoForm: boolean = false;
   isLoading: boolean = false;
   errorMassage: string = '';
   users: User[] = [];
-  usersCollection?: AngularFirestoreCollection<any[]>;
-  signInForm: FormGroup = new FormGroup({});
-  signUpForm: FormGroup = new FormGroup({});
+  loginForm: FormGroup = new FormGroup({});
+  signupForm: FormGroup = new FormGroup({});
+  saveUserInfoForm: FormGroup = new FormGroup({});
   resetPasswordForm: FormGroup = new FormGroup({});
 
   constructor(
-    public db: AngularFirestore,
     private fb: FormBuilder,
     private auth: AuthService,
-    private notify: NotifierService,
-    private router: Router
-  ) {
-    // db.collection('user')
-    //   .valueChanges()
-    //   .subscribe((users: any) => {
-    //     this.users = users;
-    //     console.log(users);
-    //   });
-    this.usersCollection = db.collection('user');
-  }
+    private notify: NotifierService
+  ) {}
 
   ngOnInit(): void {
-    this.signUpForm = this.fb.group({
-      name: ['', [Validators.required, Validators.maxLength(20)]],
+    // signupForm First
+    this.signupForm = this.fb.group(
+      {
+        firstName: ['', [Validators.required, Validators.maxLength(20)]],
+        lastName: ['', [Validators.required, Validators.maxLength(20)]],
+        email: [
+          '',
+          [
+            Validators.required,
+            Validators.email,
+            Validators.pattern(
+              '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}$'
+            ),
+          ],
+        ],
+        password: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(8),
+            Validators.maxLength(20),
+          ],
+        ],
+        confirmPassword: ['', Validators.required],
+      },
+      {
+        validator: MustMatch('password', 'confirmPassword'),
+      } as AbstractControlOptions
+    );
+
+    // saveUserInfoForm Second
+    this.saveUserInfoForm = this.fb.group({
+      region: [''],
+      city: [''],
+      role: [''],
+      country: [''],
+      specialMark: [''],
+      img: [null],
+    });
+
+    // loginForm
+    this.loginForm = this.fb.group({
       email: [
         '',
         [
@@ -71,27 +97,7 @@ export class LoginComponent implements OnInit {
       ],
     });
 
-    this.signInForm = this.fb.group({
-      email: [
-        '',
-        [
-          Validators.required,
-          Validators.email,
-          Validators.pattern(
-            '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}$'
-          ),
-        ],
-      ],
-      password: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(8),
-          Validators.maxLength(20),
-        ],
-      ],
-    });
-
+    // RestPassword
     this.resetPasswordForm = this.fb.group({
       email: [
         '',
@@ -106,113 +112,73 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  get nameErrors() {
-    return (this.signUpForm.get('name') as FormControl).errors;
+  // Controls Forms
+  get signupF() {
+    return this.signupForm.controls;
   }
-  get emailErrors() {
-    return (this.signUpForm.get('email') as FormControl).errors;
+  get userInfoF() {
+    return this.saveUserInfoForm.controls;
   }
-  get passwordErrors() {
-    return (this.signUpForm.get('password') as FormControl).errors;
-  }
-  get signinEmailErrors() {
-    return (this.signInForm.get('email') as FormControl).errors;
-  }
-  get signinPasswordErrors() {
-    return (this.signInForm.get('password') as FormControl).errors;
+  get loginF() {
+    return this.loginForm.controls;
   }
   get resetPasswordFormErrors() {
     return (this.resetPasswordForm.get('email') as FormControl).errors;
   }
 
-  onSignin(signinForm: FormGroup) {
-    if (!signinForm.valid) return;
-
-    const email = signinForm.value.email;
-    const pass = signinForm.value.password;
+  // LOGIN
+  onLogin(email: string, password: string) {
+    if (!this.loginForm.valid) return;
     this.isLoading = true;
-    this.auth.loginAuth(email, pass).subscribe({
-      next: (resData) => {
-        // console.log(resData);
-        this.isLoading = false;
-        this.router.navigate(['/layout/home']);
-        signinForm.reset();
-      },
-      error: (resError) => {
-        this.isLoading = false;
-        this.notify.errorNotification(resError.message, 'login faild');
+    this.auth.login(email, password).subscribe({
+      next: (user: any) => {
+        console.log(user);
+        if (user.status == 'ok') {
+          this.isLoading = false;
+          this.auth.handleAuth(
+            user.userInfo.accessToken,
+            user.userInfo.email,
+            user.userInfo.firstName,
+            user.userInfo.lastName,
+            user.userInfo.id,
+            user.userInfo.img,
+            user.userInfo.regionId,
+            user.userInfo.role,
+            user.userInfo.userContacts
+          );
+        } else {
+          this.isLoading = false;
+        this.notify.errorNotification(user.details, 'login failed');
+        }
       },
     });
   }
 
+  // SIGNUP
   onSignup(signupForm: FormGroup) {
     if (!signupForm.valid) return;
-
-    const email = signupForm.value.email;
-    const pass = signupForm.value.password;
-    this.isLoading = true;
-    this.auth.signUpAuth(email, pass).subscribe({
-      next: (resData) => {
-        // console.log(resData);
-        this.usersCollection?.add(signupForm.value);
-        this.isLoading = false;
-        this.router.navigate(['/layout/home']);
-        signupForm.reset();
-      },
-      error: (resError) => {
-        this.isLoading = false;
-        this.notify.errorNotification(resError.message, 'signup faild');
+    this.auth.signup(signupForm.value).subscribe({
+      next: (user: any) => {
+        if (user.status == 'ok') {
+          this.toggleCompleteInfoForm = true;
+        } else {
+          this.notify.errorNotification(user.details, 'login failed');
+        }
       },
     });
   }
 
-  signinGoogle() {
-    this.auth
-      .signinWithGoogle()
-      .catch(() =>
-        this.notify.errorNotification(
-          'check you network and try again',
-          'google login failed'
-        )
-      );
+  // Save User Info
+  onSaveInfo(emailSign: string, passwordSign: string) {
+    this.auth.saveUserInfo(this.saveUserInfoForm.value, emailSign).subscribe({
+      next: (userInfo: any) => {
+        if (userInfo.status == 'ok') {
+          console.log(userInfo);
+          this.auth.autoLogin(emailSign,passwordSign);
+        } else {
+          this.notify.errorNotification(userInfo.details, 'login failed');
+        }
+      },
+    });
   }
-  signinWithFacbook() {
-    this.auth
-      .signinWithFacbook()
-      .catch(() =>
-        this.notify.errorNotification(
-          'check you network and try again',
-          'facebook login failed'
-        )
-      );
-  }
-
-  onResetPassword(resetPasswordForm: FormGroup) {
-    if (!resetPasswordForm.valid) return;
-
-    this.auth.resetPassword(resetPasswordForm.value.email).then(
-      () =>
-        this.notify.successNotification(
-          'Password reset email sent',
-          'Reset Password'
-        ),
-      (error) =>
-        this.notify.errorNotification(
-          'network connection failed',
-          'Reset Password'
-        )
-    );
-  }
-  // changeSpecificFieldPassword() {
-  //   this.db
-  //     .collection('user')
-  //     .doc('/' + 'L6UfVtu3akpBdJStTSQw') //id Document
-  //     .update({ password: '12345678' }) // key name field :'value'
-  //     .then(() => {
-  //       console.log('done');
-  //     })
-  //     .catch(function (error) {
-  //       console.error('Error writing document: ', error);
-  //     });
-  // }
 }
