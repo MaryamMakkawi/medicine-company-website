@@ -195,13 +195,16 @@ li {
   list-style: none;
   padding: 0;
   margin: 0;
+  &:hover {
+    color: unset;
+  }
 }
 a {
   text-decoration: none;
   font-weight: 600;
 }
 .active-link {
-  color: #0a58ca !important;
+  color: $primary-400 !important;
 }
 .section {
   margin-top: 100px;
@@ -653,12 +656,13 @@ a {
 .footer-menu li {
   display: inline-block;
   margin-left: 20px;
-  &:hover a {
-    color: $primary-600;
-  }
-  a {
-    font-size: 14px;
+  .footer-link {
     color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  &:hover .footer-link {
+    color: $primary-400;
   }
 }
 

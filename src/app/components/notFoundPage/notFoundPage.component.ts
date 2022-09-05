@@ -13,11 +13,11 @@ export class notFoundPageComponent implements OnInit {
   options: AnimationOptions = {
     path: '../../../assets/images/404-not-found.json',
   };
-  ngOnInit(): void {
-    //     // Parallax Code
-    // let scene = document.getElementById('scene');
-    // let parallaxVal = new parallax(scene);
+  ngOnInit(): void {}
+  goBack() {
+    this.locate.back();
   }
+
   back() {
     this.locate.back();
   }

@@ -6,17 +6,31 @@
     <div class="nav-right-side d-flex">
       <ul class="navbar-links">
         <li>
-          <a [routerLink]="['about']" routerLinkActive="active-link" class="link"
+          <a [routerLink]="['home']" routerLinkActive="active-link" class="link"
+            >Home
+          </a>
+        </li>
+        <li>
+          <a
+            [routerLink]="['about']"
+            routerLinkActive="active-link"
+            class="link"
             >about</a
           >
         </li>
         <li>
-          <a [routerLink]="['products']" routerLinkActive="active-link" class="link"
+          <a
+            [routerLink]="['products']"
+            routerLinkActive="active-link"
+            class="link"
             >our products</a
           >
         </li>
         <li>
-          <a [routerLink]="['contacts']" routerLinkActive="active-link" class="link"
+          <a
+            [routerLink]="['contacts']"
+            routerLinkActive="active-link"
+            class="link"
             >contacts</a
           >
         </li>
@@ -29,9 +43,7 @@
         >
           <img
             class="user-img"
-            src="{{
-              user.img || '../../../assets/images/avatar-default.jpg'
-            }}"
+            src="{{ user.img || '../../../assets/images/avatar-default.jpg' }}"
           />
         </div>
         <ul class="dropdown-menu profile-dropdown p-2">
@@ -90,9 +102,7 @@
       <div class="user-profile">
         <div class="user-img">
           <img
-            src="{{
-              user.img || '../../../assets/images/avatar-default.jpg'
-            }}"
+            src="{{ user.img || '../../../assets/images/avatar-default.jpg' }}"
           />
         </div>
         <div>
@@ -148,8 +158,16 @@
                 <h3>Useful Links</h3>
               </div>
               <ul class="useful-links">
-                <li><a routerLinkActive="active-link" [routerLink]="['home']">Home</a></li>
-                <li><a routerLinkActive="active-link" [routerLink]="['about']">about</a></li>
+                <li>
+                  <a routerLinkActive="active-link" [routerLink]="['home']"
+                    >Home</a
+                  >
+                </li>
+                <li>
+                  <a routerLinkActive="active-link" [routerLink]="['about']"
+                    >about</a
+                  >
+                </li>
                 <li><a>services</a></li>
                 <li><a>portfolio</a></li>
                 <li><a>Contact</a></li>
