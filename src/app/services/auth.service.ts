@@ -1,137 +1,124 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Injectable, NgZone } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+
 import { Router } from '@angular/router';
-
-import firebase from 'firebase/compat/app';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-
-import { throwError } from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
-import { tap, catchError } from 'rxjs/operators';
 
-import { UserAuth } from '../components/login/userAuth.model';
+// environment depend
+import { environment } from 'src/environments/environment';
 
-interface AuthResponseData {
-  kind: string;
-  idToken: string;
-  email: string;
-  refreshToken: string;
-  expiresIn: string;
-  localId: string;
-  registered?: boolean;
-}
+import { User } from '../interfaces/user.model';
+import { ApiService } from './api.service';
+
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  user$ = new BehaviorSubject<UserAuth | null>(null);
+  user$ = new BehaviorSubject<User | null>(null);
 
-  constructor(
-    private http: HttpClient,
-    private route: Router,
-    private afAuth: AngularFireAuth
-  ) {}
+  constructor(private router: Router, private api: ApiService,private http: HttpClient) {}
 
-  signUpAuth(email: string, password: string) {
-    return this.http
-      .post<AuthResponseData>(
-        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDSDL7eoSZNFJWT6M6--ofXSQLFw4QzDSE',
-        { email: email, password: password, returnSecureToken: true }
-      )
-      .pipe(
-        tap((resData) => {
-          this.handelAuth(resData.email, resData.localId, resData.idToken);
-        }),
-        catchError(this.handelError)
-      );
+  login(email: string, password: string) {
+    return this.api.post(environment.base + '/site/login', { email, password });
   }
 
-  loginAuth(email: string, password: string) {
-    return this.http
-      .post<AuthResponseData>(
-        'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDSDL7eoSZNFJWT6M6--ofXSQLFw4QzDSE',
-        { email: email, password: password, returnSecureToken: true }
-      )
-      .pipe(
-        tap((resData) => {
-          this.handelAuth(resData.email, resData.localId, resData.idToken);
-        }),
-        catchError(this.handelError)
-      );
+  signup(userSign: any) {
+    return this.api.post(environment.base + '/site/signup', userSign);
+  }
+  saveUserInfo(userSign: any, email: string) {
+    return this.api.post(environment.base + '/site/save-user-info', {
+      userSign,
+      email,
+    });
   }
 
-  async signinWithGoogle() {
-    const result: any = await this.afAuth.signInWithPopup(
-      new firebase.auth.GoogleAuthProvider()
-    );
-    let userData = result.user.multiFactor.user;
-    this.handelAuth(
-      userData.email,
-      userData.uid,
-      userData.accessToken,
-      userData.displayName,
-      userData.photoURL
-    );
-    this.route.navigate(['/layout/home']);
-  }
-
-  async signinWithFacbook() {
-    const result: any = await this.afAuth.signInWithPopup(
-      new firebase.auth.FacebookAuthProvider()
-    );
-    // let userData = result.user.multiFactor.user;
-    // this.handelAuth(
-    //   userData.email,
-    //   userData.uid,
-    //   userData.accessToken,
-    //   userData.displayName,
-    //   userData.photoURL
-    // );
-    // this.route.navigate(['/layout/home']);
-  }
-
-  logOutAuth() {
-    this.route.navigate(['/login']);
-    localStorage.removeItem('userData');
-    this.user$.next(null);
-  }
-
-  resetPassword(email: string) {
-    return this.afAuth.sendPasswordResetEmail(email);
-  }
-
-  private handelAuth(
+  public handleAuth(
+    accessToken: string,
     email: string,
-    userId: string,
-    token: string,
-    name?: string,
-    imgUrl?: string
+    firstName: string,
+    lastName: string,
+    id: number,
+    img: string,
+    regionId: number,
+    role: string,
+    userContacts: string[]
   ) {
-    const user = new UserAuth(email, userId, token, name, imgUrl);
+    const user = new User(
+      accessToken,
+      email,
+      firstName,
+      lastName,
+      id,
+      img,
+      regionId,
+      role,
+      userContacts
+    );
     localStorage.setItem('userData', JSON.stringify(user));
     this.user$.next(user);
+    user.isAuth = true;
+    this.router.navigate(['/layout/home']);
   }
 
-  private handelError(resError: HttpErrorResponse) {
-    let errorMassage: string = 'An Unknown Error occured!';
-    if (
-      !resError.error ||
-      !resError.error.error ||
-      !resError.error.error.errors[0]
-    )
-      return throwError(() => new Error(errorMassage));
-
-    switch (resError.error.error.errors[0].message) {
-      case 'EMAIL_NOT_FOUND':
-        errorMassage = 'Email Not Found';
-        break;
-      case 'INVALID_PASSWORD':
-        errorMassage = 'Invalid Password';
-        break;
-      case 'EMAIL_EXISTS':
-        errorMassage = 'This email exists already';
-        break;
+  autoLogin(
+    email?: string,
+    password?: string
+  ) {
+    if (!localStorage.getItem('userData') && !(email && password)) {
+      return;
     }
-    return throwError(() => new Error(errorMassage));
+   if (localStorage.getItem('userData')) {
+      const userData: {
+        accessToken: string;
+        email: string;
+        firstName: string;
+        lastName: string;
+        id: number;
+        img: string;
+        regionId: number;
+        role: string;
+        userContacts: string[];
+      } = JSON.parse(localStorage.getItem('userData')!);
+      const loadedUser = new User(
+        userData.accessToken,
+        userData.email,
+        userData.firstName,
+        userData.lastName,
+        userData.id,
+        userData.img,
+        userData.regionId,
+        userData.role,
+        userData.userContacts
+      );
+      this.user$.next(loadedUser);
+      loadedUser.isAuth = true;
+      this.router.navigate(['/layout/home']);
+    } else if (email && password) {
+      console.log('sign');
+      this.http.post(environment.base + '/site/login', { email, password }).subscribe((res: any) => {
+        if (res.status === 'ok') {
+          this.handleAuth(
+            res.userInfo.accessToken,
+            res.userInfo.email,
+            res.userInfo.firstName,
+            res.userInfo.lastName,
+            res.userInfo.id,
+            res.userInfo.img,
+            res.userInfo.regionId,
+            res.userInfo.role,
+            res.userInfo.userContacts
+          );
+          this.router.navigate(['/layout/home']);
+        } else {
+          console.log(res.details);
+        }
+      });
+    }
+  }
+
+  logout() {
+    this.router.navigate(['/login']);
+    localStorage.removeItem('userData');
+    this.user$.next(null);
   }
 }

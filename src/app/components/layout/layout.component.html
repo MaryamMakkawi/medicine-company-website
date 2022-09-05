@@ -30,7 +30,7 @@
           <img
             class="user-img"
             src="{{
-              user.imgUrl || '../../../assets/images/avatar-default.jpg'
+              user.img || '../../../assets/images/avatar-default.jpg'
             }}"
           />
         </div>
@@ -39,11 +39,11 @@
             <img
               class="user-img"
               src="{{
-                user.imgUrl || '../../../assets/images/avatar-default.jpg'
+                user.img || '../../../assets/images/avatar-default.jpg'
               }}"
             />
             <div class="user-info">
-              <h5>{{ user.name || "User Name" }}</h5>
+              <h5>{{ user.firstName || "User Name" }}</h5>
               <span>view profile</span>
             </div>
           </div>
@@ -91,12 +91,12 @@
         <div class="user-img">
           <img
             src="{{
-              user.imgUrl || '../../../assets/images/avatar-default.jpg'
+              user.img || '../../../assets/images/avatar-default.jpg'
             }}"
           />
         </div>
         <div>
-          <h5>{{ user.name || "User Name" }}</h5>
+          <h5>{{ user.firstName || "User Name" }}</h5>
           <span>View Profile</span>
         </div>
       </div>
