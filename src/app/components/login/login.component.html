@@ -12,7 +12,7 @@
     >
       <h3>Create New Account</h3>
       <!-- FirstName -->
-      <div class="w-100 my-3">
+      <div class="w-100 mb-3">
         <input
           type="text"
           formControlName="firstName"
@@ -39,7 +39,7 @@
         </div>
       </div>
       <!-- LastName -->
-      <div class="w-100 my-3">
+      <div class="w-100 mb-3">
         <input
           type="text"
           formControlName="lastName"
@@ -66,7 +66,7 @@
         </div>
       </div>
       <!-- Email -->
-      <div class="w-100 mb-3">
+      <div class="w-100">
         <input
           type="email"
           formControlName="email"
@@ -152,7 +152,8 @@
         Next
       </button>
       <!-- Start Loading Spinner During Authentication Validation -->
-      <div *ngIf="isLoading" class="lds-ripple mt-3">
+      <div class="lds-ring" *ngIf="isLoading">
+        <div></div>
         <div></div>
         <div></div>
       </div>
@@ -177,7 +178,7 @@
           type="file"
           name="file-input"
           id="file-input"
-          formControlName="img"
+          formControlName="userImage"
           class="file-input__input"
         />
         <label class="file-input__label" for="file-input">
@@ -204,17 +205,14 @@
       <label for="inputRole" class="form-label">Role</label>
       <select id="inputRole" class="form-select" formControlName="role">
         <option selected>Choose...</option>
-        <option>m</option>
-        <option>m</option>
-        <option>m</option>
-        <option>m</option>
+        <option *ngFor="let role of roles ;let i=index" [value]="i">{{role}}</option>
       </select>
       <!--Region & City & Country  -->
       <div class="mt-3">Position:</div>
       <div class="d-flex mt-3">
         <!-- Region -->
         <label for="inputRegion" class="form-label me-2">Region</label>
-        <select id="inputRegion" class="form-select" formControlName="region">
+        <select id="inputRegion" class="form-select" formControlName="regionId">
           <option selected>Choose...</option>
           <option>m</option>
           <option>m</option>
@@ -224,7 +222,7 @@
 
         <!-- City -->
         <label for="inputCity" class="form-label ms-2 me-2">City</label>
-        <select id="inputCity" class="form-select" formControlName="city">
+        <select id="inputCity" class="form-select" formControlName="cityId">
           <option selected>Choose...</option>
           <option>m</option>
           <option>m</option>
@@ -234,7 +232,7 @@
 
         <!-- Country -->
         <label for="inputCountry" class="form-label ms-2 me-2">Country</label>
-        <select id="inputCountry" class="form-select" formControlName="country">
+        <select id="inputCountry" class="form-select" formControlName="countryId">
           <option selected>Choose...</option>
           <option>m</option>
           <option>m</option>
@@ -264,7 +262,8 @@
         SignUp
       </button>
       <!-- Start Loading Spinner During Authentication Validation -->
-      <div *ngIf="isLoading" class="lds-ripple mt-3">
+      <div class="lds-ring" *ngIf="isLoading">
+        <div></div>
         <div></div>
         <div></div>
       </div>
@@ -285,8 +284,8 @@
 
       <!--social media  -->
       <!-- <div class="social-container d-flex">
-        <a (click)="signinWithFacbook()" class="social"><i class="bi bi-facebook"></i></a>
-        <a (click)="signinGoogle()"><img src="../assets/images/google.svg"/></a>
+        <a (click)="signingWithFacebook()" class="social"><i class="bi bi-facebook"></i></a>
+        <a (click)="signingGoogle()"><img src="../assets/images/google.svg"/></a>
       </div>
       <span class="mb-2">or use your account</span> -->
 
@@ -364,7 +363,11 @@
       </button>
 
       <!-- Start Loading Spinner During Authentication Validation From Angular.io-->
-      <div *ngIf="isLoading" class="lds-dual-ring"></div>
+      <div class="lds-ring" *ngIf="isLoading">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
       <!-- End Loading Spinner During Authentication Validation From Angular.io-->
     </form>
   </div>

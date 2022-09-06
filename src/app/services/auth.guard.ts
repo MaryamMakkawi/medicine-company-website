@@ -25,7 +25,6 @@ export class AuthGuard implements CanActivate {
       return  this.auth.user$.pipe(
         take(1),
         map(user => {
-          console.log( localStorage.getItem('userData'));
           if (user?.isAuth || localStorage.getItem('userData')) {
             return true;
           }

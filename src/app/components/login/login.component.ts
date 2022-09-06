@@ -23,6 +23,14 @@ export class LoginComponent implements OnInit {
   isLoading: boolean = false;
   errorMassage: string = '';
   users: User[] = [];
+  roles: string[] = [
+    'Doctor',
+    'Pharmacist',
+    'Sales Representative',
+    'Scientific representative',
+    'Agent',
+    'Company manager',
+  ];
   loginForm: FormGroup = new FormGroup({});
   signupForm: FormGroup = new FormGroup({});
   saveUserInfoForm: FormGroup = new FormGroup({});
@@ -67,12 +75,12 @@ export class LoginComponent implements OnInit {
 
     // saveUserInfoForm Second
     this.saveUserInfoForm = this.fb.group({
-      region: [''],
-      city: [''],
+      regionId: [''],
+      cityId: [''],
+      countryId: [''],
       role: [''],
-      country: [''],
       specialMark: [''],
-      img: [null],
+      userImage: [null],
     });
 
     // loginForm
@@ -132,8 +140,8 @@ export class LoginComponent implements OnInit {
     this.isLoading = true;
     this.auth.login(email, password).subscribe({
       next: (user: any) => {
-        console.log(user);
         if (user.status == 'ok') {
+          console.log(user);
           this.isLoading = false;
           this.auth.handleAuth(
             user.userInfo.accessToken,
@@ -144,11 +152,12 @@ export class LoginComponent implements OnInit {
             user.userInfo.img,
             user.userInfo.regionId,
             user.userInfo.role,
+            user.userInfo.specialMark,
             user.userInfo.userContacts
           );
         } else {
-          this.isLoading = false;
-        this.notify.errorNotification(user.details, 'login failed');
+          console.log(user.details);
+          this.notify.errorNotification(user.details.email, 'login failed');
         }
       },
     });
@@ -157,12 +166,15 @@ export class LoginComponent implements OnInit {
   // SIGNUP
   onSignup(signupForm: FormGroup) {
     if (!signupForm.valid) return;
+    this.isLoading = true;
     this.auth.signup(signupForm.value).subscribe({
       next: (user: any) => {
         if (user.status == 'ok') {
+          this.isLoading = false;
           this.toggleCompleteInfoForm = true;
         } else {
-          this.notify.errorNotification(user.details, 'login failed');
+          console.log(user.details);
+          this.notify.errorNotification(user.details.email, 'login failed');
         }
       },
     });
@@ -170,13 +182,15 @@ export class LoginComponent implements OnInit {
 
   // Save User Info
   onSaveInfo(emailSign: string, passwordSign: string) {
+    this.isLoading = true;
     this.auth.saveUserInfo(this.saveUserInfoForm.value, emailSign).subscribe({
       next: (userInfo: any) => {
         if (userInfo.status == 'ok') {
-          console.log(userInfo);
-          this.auth.autoLogin(emailSign,passwordSign);
+          this.isLoading = false;
+          this.auth.autoLogin(true,emailSign, passwordSign);
         } else {
-          this.notify.errorNotification(userInfo.details, 'login failed');
+          console.log(userInfo.details);
+          this.notify.errorNotification(userInfo.details.email, 'login failed');
         }
       },
     });

@@ -262,23 +262,34 @@ form {
 }
 
 //Start Loading Spinner During Authentication Validation
-.lds-dual-ring {
+.lds-ring {
   display: inline-block;
-  width: 60px;
-  height:60px;
-}
-.lds-dual-ring:after {
-  content: " ";
-  display: block;
+  position: relative;
   width: 50px;
-  height:50px;
-  margin: 6px;
-  border-radius: 50%;
-  border: 6px solid #0c59ad,;
-  border-color: #0c59ad transparent #0c59ad, transparent;
-  animation: lds-dual-ring 1.2s linear infinite;
+  height: 50px;
 }
-@keyframes lds-dual-ring {
+.lds-ring div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 45px;
+  height: 45px;
+  margin: 4px;
+  border: 4px solid #0c59ad;
+  border-radius: 50%;
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #0c59ad transparent transparent transparent;
+}
+.lds-ring div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+.lds-ring div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+.lds-ring div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+@keyframes lds-ring {
   0% {
     transform: rotate(0deg);
   }
@@ -286,8 +297,8 @@ form {
     transform: rotate(360deg);
   }
 }
-//End Loading Spinner During Authentication Validation
 
+//End Loading Spinner During Authentication Validation
 
 // Button Select Image Profile
 
