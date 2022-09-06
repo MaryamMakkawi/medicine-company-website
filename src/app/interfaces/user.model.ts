@@ -8,6 +8,7 @@ export class User {
     public img: string,
     public regionId: number,
     public role: string,
+    public specialMark: string,
     public userContacts: string[],
     public isAuth?: boolean
   ) {}

@@ -25,9 +25,9 @@ export class AuthService {
   signup(userSign: any) {
     return this.api.post(environment.base + '/site/signup', userSign);
   }
-  saveUserInfo(userSign: any, email: string) {
+  saveUserInfo(userSignInfo: any, email: string) {
     return this.api.post(environment.base + '/site/save-user-info', {
-      userSign,
+      userSignInfo,
       email,
     });
   }
@@ -41,6 +41,7 @@ export class AuthService {
     img: string,
     regionId: number,
     role: string,
+    specialMark: string,
     userContacts: string[]
   ) {
     const user = new User(
@@ -52,6 +53,7 @@ export class AuthService {
       img,
       regionId,
       role,
+      specialMark,
       userContacts
     );
     localStorage.setItem('userData', JSON.stringify(user));
@@ -61,13 +63,14 @@ export class AuthService {
   }
 
   autoLogin(
+    updateUserInfo: boolean = false,
     email?: string,
     password?: string
   ) {
     if (!localStorage.getItem('userData') && !(email && password)) {
       return;
     }
-   if (localStorage.getItem('userData')) {
+   if (localStorage.getItem('userData') && updateUserInfo== false) {
       const userData: {
         accessToken: string;
         email: string;
@@ -77,6 +80,7 @@ export class AuthService {
         img: string;
         regionId: number;
         role: string;
+        specialMark: string;
         userContacts: string[];
       } = JSON.parse(localStorage.getItem('userData')!);
       const loadedUser = new User(
@@ -88,13 +92,13 @@ export class AuthService {
         userData.img,
         userData.regionId,
         userData.role,
+        userData.specialMark,
         userData.userContacts
       );
       this.user$.next(loadedUser);
       loadedUser.isAuth = true;
       this.router.navigate(['/layout/home']);
-    } else if (email && password) {
-      console.log('sign');
+    } else if (email && password && updateUserInfo==true) {
       this.http.post(environment.base + '/site/login', { email, password }).subscribe((res: any) => {
         if (res.status === 'ok') {
           this.handleAuth(
@@ -106,6 +110,7 @@ export class AuthService {
             res.userInfo.img,
             res.userInfo.regionId,
             res.userInfo.role,
+            res.userInfo.specialMark,
             res.userInfo.userContacts
           );
           this.router.navigate(['/layout/home']);
