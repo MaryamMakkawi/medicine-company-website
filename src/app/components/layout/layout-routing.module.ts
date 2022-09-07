@@ -17,21 +17,29 @@ const routes: Routes = [
         path: 'home',
         loadChildren: () =>
           import('./home/home.module').then((m) => m.HomeModule),
-          canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
       },
       {
         path: 'about',
         loadChildren: () =>
           import('./about/about.module').then((m) => m.AboutModule),
       },
+      {
+        path: 'products',
+        loadChildren: () =>
+          import('./products/products.module').then((m) => m.ProductsModule),
+      },
+      {
+        path: 'products/:id',
+        loadChildren: () =>
+          import('./products/medicine/medicine.module').then((m) => m.MedicineModule),
+      },
     ],
   },
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forChild(routes)
-  ],
+  imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
 export class LayoutRoutingModule {}

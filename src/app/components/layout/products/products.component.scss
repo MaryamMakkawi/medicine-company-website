@@ -1,0 +1,125 @@
+$main-bg: hsl(217, 54%, 11%);
+$card-bg: hsl(216, 50%, 16%);
+$line: hsl(215, 32%, 27%);
+$soft: hsl(215, 51%, 70%);
+$cyan: hsl(178, 100%, 50%);
+p {
+  margin: 12px 0;
+}
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+.card {
+  width: 250px;
+  height: 410px;
+  background-color: #000c5daf;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 15px;
+  margin-top: 30px;
+}
+.box-1 {
+  width: 100%;
+  min-height: 40%;
+  // background: url(https://i.iheart.com/v3/url/aHR0cHM6Ly9kM3Qzb3pmdG1kbWgzaS5jbG91ZGZyb250Lm5ldC9wcm9kdWN0aW9uL3BvZGNhc3RfdXBsb2FkZWRfZXBpc29kZS8xMDk5MzM3My8xMDk5MzM3My0xNjQ4NzI5OTUwNzY3LWYxYWU1NzFiZWFiNGMuanBn);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  transition: 0.5s;
+}
+.box-1 svg {
+  display: none;
+  transition: 0.5s;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: 0.5s;
+}
+.green {
+  background-color: #ac9eff;
+  width: 100%;
+  height: 100%;
+  opacity: 0.4;
+  display: none;
+  border-radius: inherit;
+  transition: 0.5s;
+}
+.box-1:hover .green {
+  display: block;
+}
+.box-1:hover svg {
+  display: block;
+}
+h3 {
+  color: #f8e5ff;
+  font-size: 1.2rem;
+  margin: 10px 0;
+  cursor: pointer;
+}
+.box-2 p {
+  font-size: 1rem;
+  color: #f8e5ff;
+  line-height: 30px;
+  margin-bottom: 11px;
+}
+.shop {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+button {
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+button svg {
+  margin-right: 5px;
+}
+button:first-of-type {
+  font-size: 1rem;
+  color: #f8e5ff;
+  margin-bottom: 5px;
+}
+button:last-of-type {
+  font-size: 1rem;
+  color: #f8e5ff;
+}
+hr {
+  border: 1px solid #33348e;
+  margin-bottom: 10px;
+}
+// .card-foot {
+//   display: flex;
+//   align-items: center;
+//   vertical-align: middle;
+// }
+.card-foot p {
+  margin-top: 5px;
+}
+span {
+  color: #f8e5ff;
+  cursor: pointer;
+}
+h3:hover,
+span:hover {
+  transition: 0.5s;
+  color: #33348e;
+}
+@media only screen and (max-width: 700px) {
+  .card {
+    margin: 20px;
+    height: 70vh;
+  }
+}
