@@ -5,7 +5,7 @@ export class Medicine {
     public indications: string,
     public packing: string,
     public composition: number,
-    public medicineImages: [],
+    public imgs: [],
     public expiredDate: number,
     public price: string,
     public netPrice: string,
