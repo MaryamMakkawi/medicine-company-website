@@ -3,11 +3,8 @@
   <div class="card" *ngFor="let medicine of medicines;let i=index">
     <div
       class="box-1"
-      [ngStyle]="{
-        'background-image': 'url(' + medicine.medicineImages[0] + ')'
-      }"
+      [style.background]="'url(' + medicine.imgs+ ')' "
       [routerLink]="['/layout/products',i+1]"
-      [queryParams]="{id:i+1}"
     >
       <svg width="48" height="48" xmlns="http://www.w3.org/2000/svg">
         <g fill="none" fill-rule="evenodd">
@@ -45,7 +42,7 @@
       <hr />
       <div class="card-foot">
         <p>
-          Category Form: <span>{{ medicine.categoryId }}</span>
+          Category Form: <span>{{ medicine.categoryId}}</span>
         </p>
       </div>
     </div>

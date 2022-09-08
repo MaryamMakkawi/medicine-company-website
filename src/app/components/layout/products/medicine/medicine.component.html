@@ -1,3 +1,53 @@
 <div class="container">
-  <p>medicine works!</p>
+  <div class="product-card">
+    <div class="image-container">
+      <div class="cover-image product-image">
+        <img [src]="imgFirst" alt="" />
+      </div>
+      <div
+        class="more-image-container"
+        *ngFor="let img of medicine?.imgs; let i = index"
+      >
+        <div class="more-image product-image">
+          <img [src]="img[i]" alt="" />
+        </div>
+        <div class="more-image product-image">
+          <img [src]="imgFirst" alt="" />
+        </div>
+        <div class="more-image product-image">
+          <img [src]="imgFirst" alt="" />
+        </div>
+      </div>
+    </div>
+    <div class="product-info">
+      <a href="#" class="free-shipping">medicine</a>
+      <h3 class="product-name">medicine Name: {{ medicine?.productName }}</h3>
+      <p class="discount-price">Price: {{ medicine?.price }}$</p>
+      <p class="discount-price">netPrice: {{ medicine?.netPrice }}$</p>
+      <p class="discount-price">Packing: {{ medicine?.packing }}</p>
+      <p class="offer-info">Description: {{ medicine?.indications }}</p>
+      <p class="offer-info">composition: {{ medicine?.composition }}</p>
+      <p class="offer-info">
+        pharmaceuticalForm: {{ medicine?.pharmaceuticalFormId }}
+      </p>
+      <p class="offer-info">Category: {{ medicine?.categoryId }}</p>
+      <!-- <a href="#" class="add-to-cart">
+        Add to cart
+      </a> -->
+      <div class="stock">
+        <div class="stock-status"></div>
+        <p class="stock-info">
+          expired Date: {{ medicine?.expiredDate | date: "longDate" }}
+        </p>
+      </div>
+      <!-- <div class="buttons">
+        <a href="#" class="button">
+         Add to cart
+        </a>
+        <a href="#" class="button">
+           Add to wishlist
+        </a>
+      </div> -->
+    </div>
+  </div>
 </div>

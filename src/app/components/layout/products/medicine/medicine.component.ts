@@ -1,6 +1,7 @@
 import { HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Medicine } from 'src/app/interfaces/medicine.model';
 import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { environment } from 'src/environments/environment';
@@ -11,19 +12,23 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./medicine.component.scss'],
 })
 export class MedicineComponent implements OnInit {
-  constructor(private route: ActivatedRoute, private api: ApiService,private auth:AuthService) {}
+  medicine: Medicine |undefined;
+  imgFirst!: string;
+  constructor(
+    private route: ActivatedRoute,
+    private api: ApiService,
+  ) {}
 
   ngOnInit(): void {
-     this.auth.user$.subscribe(user=>{
-      console.log(user?.getToken());
-     })
-
     const id = this.route.snapshot.paramMap.get('id');
-    let param = new HttpParams().set('id', +id!);
-    console.log(environment.base + '/medicine/get?' + param);
-    this.api.get(environment.base + '/medicine/get', param).subscribe({
+    this.api.get(environment.base + `/medicine/get?id=${id}`).subscribe({
       next: (res: any) => {
-        console.log(res);
+        if (res.status == 'ok') {
+          this.medicine = res.medicine;
+          this.imgFirst = res.medicine.imgs[0];
+          console.log(this.imgFirst );
+          console.log(res);
+        }
       },
     });
   }
