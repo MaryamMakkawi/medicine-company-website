@@ -144,6 +144,7 @@
         </div>
       </div>
       <button
+        *ngIf="!isLoading"
         class="submit-btn sign-btn"
         type="submit"
         [disabled]="!signupForm.valid"
@@ -173,71 +174,68 @@
       "
     >
       <!-- Image Select -->
-      <div class="file-input row mb-3">
+      <div class="file-input row mb-3" >
         <input
           type="file"
           name="file-input"
           id="file-input"
-          formControlName="userImage"
+          formControlName="img"
           class="file-input__input"
+          #img
+          (change)="processFile(img)"
+
         />
         <label class="file-input__label" for="file-input">
-          <svg
-            aria-hidden="true"
-            focusable="false"
-            data-prefix="fas"
-            data-icon="upload"
-            class="svg-inline--fa fa-upload fa-w-16"
-            role="img"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 512 512"
-          >
-            <path
-              fill="currentColor"
-              d="M296 384h-80c-13.3 0-24-10.7-24-24V192h-87.7c-17.8 0-26.7-21.5-14.1-34.1L242.3 5.7c7.5-7.5 19.8-7.5 27.3 0l152.2 152.2c12.6 12.6 3.7 34.1-14.1 34.1H320v168c0 13.3-10.7 24-24 24zm216-8v112c0 13.3-10.7 24-24 24H24c-13.3 0-24-10.7-24-24V376c0-13.3 10.7-24 24-24h136v8c0 30.9 25.1 56 56 56h80c30.9 0 56-25.1 56-56v-8h136c13.3 0 24 10.7 24 24zm-124 88c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20zm64 0c0-11-9-20-20-20s-20 9-20 20 9 20 20 20 20-9 20-20z"
-            ></path>
-          </svg>
-          <span>Select Image Profile</span></label
-        >
+          <div class="user-img">
+            <img src="{{ '../../../assets/images/avatar-default.jpg' }}" />
+            <i class="bi bi-plus"></i>
+          </div>
+        </label>
       </div>
 
       <!-- Role -->
       <label for="inputRole" class="form-label">Role</label>
       <select id="inputRole" class="form-select" formControlName="role">
         <option selected>Choose...</option>
-        <option *ngFor="let role of roles ;let i=index" [value]="i">{{role}}</option>
+        <option *ngFor="let role of roles; let i = index" [value]="i">
+          {{ role }}
+        </option>
       </select>
       <!--Region & City & Country  -->
       <div class="mt-3">Position:</div>
       <div class="d-flex mt-3">
         <!-- Region -->
         <label for="inputRegion" class="form-label me-2">Region</label>
-        <select id="inputRegion" class="form-select" formControlName="regionId">
+        <select id="inputRegion" class="form-select" formControlName="region">
           <option selected>Choose...</option>
-          <option>m</option>
-          <option>m</option>
-          <option>m</option>
-          <option>m</option>
+          <option  value="m">m</option>
+          <option  value="m">m</option>
+          <option  value="m">m</option>
+          <option  value="m">m</option>
         </select>
 
         <!-- City -->
         <label for="inputCity" class="form-label ms-2 me-2">City</label>
-        <select id="inputCity" class="form-select" formControlName="cityId">
+        <select id="inputCity" class="form-select" formControlName="city">
           <option selected>Choose...</option>
-          <option>m</option>
-          <option>m</option>
-          <option>m</option>
-          <option>m</option>
+          <option  value="m">m</option>
+          <option  value="m">m</option>
+          <option  value="m">m</option>
+          <option  value="m">m</option>
         </select>
 
         <!-- Country -->
         <label for="inputCountry" class="form-label ms-2 me-2">Country</label>
-        <select id="inputCountry" class="form-select" formControlName="countryId">
+        <select
+          id="inputCountry"
+          class="form-select"
+          formControlName="country"
+        >
           <option selected>Choose...</option>
-          <option>m</option>
-          <option>m</option>
-          <option>m</option>
-          <option>m</option>
+          <option value="m">m</option>
+          <option  value="m">m</option>
+          <option  value="m">m</option>
+          <option  value="m">m</option>
         </select>
       </div>
       <!-- Special Mark-->
@@ -254,6 +252,7 @@
         />
       </div>
       <button
+        *ngIf="!isLoading"
         class="submit-btn sign-btn mt-5"
         type="submit"
         [disabled]="!saveUserInfoForm.valid"
@@ -354,6 +353,7 @@
         >Forgot your password?</a
       >
       <button
+        *ngIf="!isLoading"
         class="submit-btn sign-btn"
         type="submit"
         [disabled]="!loginForm.valid"

@@ -21,15 +21,21 @@ export class LayoutComponent implements OnInit {
     'Agent',
     'Company manager',
   ];
-  constructor(private auth: AuthService,private fb:FormBuilder) {}
+  constructor(private auth: AuthService, private fb: FormBuilder) {}
   ngOnInit(): void {
     this.currentYear = new Date().getFullYear();
     this.user = JSON.parse(localStorage.getItem('userData') || '{}');
     // !Form user
     this.userInfoForm = this.fb.group({
       userImage: [null],
-      firstName: [this.user.firstName, [Validators.required, Validators.maxLength(20)]],
-      lastName: [this.user.lastName, [Validators.required, Validators.maxLength(20)]],
+      firstName: [
+        this.user.firstName,
+        [Validators.required, Validators.maxLength(20)],
+      ],
+      lastName: [
+        this.user.lastName,
+        [Validators.required, Validators.maxLength(20)],
+      ],
       email: [
         this.user.email,
         [
@@ -40,12 +46,11 @@ export class LayoutComponent implements OnInit {
           ),
         ],
       ],
-      regionId: [''],
-      cityId: [''],
-      countryId: [''],
+      region: [this.user.region],
+      city: [this.user.city],
+      country: [this.user.country],
       role: [this.user.role],
       specialMark: [this.user.specialMark],
-
     });
   }
 
@@ -59,18 +64,34 @@ export class LayoutComponent implements OnInit {
     window.scrollTo(0, 0);
   }
 
-  get userInfoF(){
+  get userInfoF() {
     return this.userInfoForm.controls;
   }
 
-  onSave(){
-    this.auth.saveUserInfo(this.userInfoForm.value,this.userInfoForm.value.email).subscribe((updateUser:any)=>{
-      console.log(updateUser);
-      if(updateUser.status=='ok'){
-        this.auth.autoLogin(false,this.userInfoForm.value.email,this.userInfoForm.value.password);
-      }
-
-    })
+  onSave() {
+    this.auth
+      .saveUserInfo(
+        this.userInfoForm.value.userImage,
+        this.userInfoForm.value.regionId,
+        this.userInfoForm.value.cityId,
+        this.userInfoForm.value.countryId,
+        this.userInfoForm.value.region,
+        this.userInfoForm.value.city,
+        this.userInfoForm.value.country,
+        this.userInfoForm.value.role,
+        this.userInfoForm.value.specialMark,
+        this.userInfoForm.value.Contacts,
+        this.userInfoForm.value.email
+      )
+      .subscribe((updateUser: any) => {
+        console.log(updateUser);
+        if (updateUser.status == 'ok') {
+          this.auth.autoLogin(
+            this.userInfoForm.value.email,
+            this.userInfoForm.value.password
+          );
+        }
+      });
   }
 
   onLogOut() {

@@ -13,7 +13,7 @@ p {
 .card {
   width: 250px;
   height: 410px;
-  background-color: #000c5daf;
+  background-color: #F4ECFF;
   border-radius: 20px;
   display: flex;
   flex-direction: column;
@@ -23,7 +23,6 @@ p {
 .box-1 {
   width: 100%;
   min-height: 40%;
-  // background: url(https://i.iheart.com/v3/url/aHR0cHM6Ly9kM3Qzb3pmdG1kbWgzaS5jbG91ZGZyb250Lm5ldC9wcm9kdWN0aW9uL3BvZGNhc3RfdXBsb2FkZWRfZXBpc29kZS8xMDk5MzM3My8xMDk5MzM3My0xNjQ4NzI5OTUwNzY3LWYxYWU1NzFiZWFiNGMuanBn);
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -60,14 +59,14 @@ p {
   display: block;
 }
 h3 {
-  color: #f8e5ff;
+  color: #33348e;
   font-size: 1.2rem;
   margin: 10px 0;
   cursor: pointer;
 }
 .box-2 p {
   font-size: 1rem;
-  color: #f8e5ff;
+  color: #33348e;
   line-height: 30px;
   margin-bottom: 11px;
 }
@@ -87,14 +86,15 @@ button {
 button svg {
   margin-right: 5px;
 }
-button:first-of-type {
+button:first-of-type,button.second {
   font-size: 1rem;
-  color: #f8e5ff;
+  color: #33348e;
   margin-bottom: 5px;
 }
+
 button:last-of-type {
   font-size: 1rem;
-  color: #f8e5ff;
+  color: #33348e;
 }
 hr {
   border: 1px solid #33348e;
@@ -109,13 +109,12 @@ hr {
   margin-top: 5px;
 }
 span {
-  color: #f8e5ff;
-  cursor: pointer;
+  color: #33348e;
 }
 h3:hover,
 span:hover {
   transition: 0.5s;
-  color: #33348e;
+  color: #ac9eff;
 }
 @media only screen and (max-width: 700px) {
   .card {
