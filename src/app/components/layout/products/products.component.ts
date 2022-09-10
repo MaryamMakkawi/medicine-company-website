@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./products.component.scss'],
 })
 export class ProductsComponent implements OnInit {
-  medicines!: Medicine[];
+  medicines!: Medicine[]|undefined;
   constructor(private api: ApiService) {}
 
   ngOnInit(): void {

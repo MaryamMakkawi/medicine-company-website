@@ -23,6 +23,7 @@ export class LoginComponent implements OnInit {
   isLoading: boolean = false;
   errorMassage: string = '';
   users: User[] = [];
+  userImg:any;
   roles: string[] = [
     'Doctor',
     'Pharmacist',
@@ -75,12 +76,12 @@ export class LoginComponent implements OnInit {
 
     // saveUserInfoForm Second
     this.saveUserInfoForm = this.fb.group({
-      regionId: [''],
-      cityId: [''],
-      countryId: [''],
+      region: [''],
+      city: [''],
+      country: [''],
       role: [''],
       specialMark: [''],
-      userImage: [null],
+      img: [null],
     });
 
     // loginForm
@@ -141,23 +142,31 @@ export class LoginComponent implements OnInit {
     this.auth.login(email, password).subscribe({
       next: (user: any) => {
         if (user.status == 'ok') {
+          console.log(this.loginForm);
           console.log(user);
           this.isLoading = false;
           this.auth.handleAuth(
             user.userInfo.accessToken,
             user.userInfo.email,
+            user.userInfo.password,
             user.userInfo.firstName,
             user.userInfo.lastName,
             user.userInfo.id,
             user.userInfo.img,
             user.userInfo.regionId,
+            user.userInfo.cityId,
+            user.userInfo.countryId,
+            user.userInfo.region,
+            user.userInfo.city,
+            user.userInfo.country,
             user.userInfo.role,
             user.userInfo.specialMark,
-            user.userInfo.userContacts
+            user.userInfo.Contacts
           );
         } else {
           console.log(user.details);
-          this.notify.errorNotification(user.details.email, 'login failed');
+          this.isLoading = false;
+          this.notify.errorNotification(user.details, 'login failed');
         }
       },
     });
@@ -167,32 +176,67 @@ export class LoginComponent implements OnInit {
   onSignup(signupForm: FormGroup) {
     if (!signupForm.valid) return;
     this.isLoading = true;
-    this.auth.signup(signupForm.value).subscribe({
-      next: (user: any) => {
-        if (user.status == 'ok') {
-          this.isLoading = false;
-          this.toggleCompleteInfoForm = true;
-        } else {
-          console.log(user.details);
-          this.notify.errorNotification(user.details.email, 'login failed');
-        }
-      },
-    });
+    this.auth
+      .signup(
+        signupForm.value.accessToken,
+        signupForm.value.email,
+        signupForm.value.password,
+        signupForm.value.firstName,
+        signupForm.value.lastName,
+        signupForm.value.id
+      )
+      .subscribe({
+        next: (user: any) => {
+          if (user.status == 'ok') {
+            console.log(signupForm);
+            console.log(user);
+            this.isLoading = false;
+            this.toggleCompleteInfoForm = true;
+          } else {
+            console.log(user.details);
+            this.isLoading = false;
+            this.notify.errorNotification(user.details.email, 'login failed');
+          }
+        },
+      });
   }
 
   // Save User Info
   onSaveInfo(emailSign: string, passwordSign: string) {
     this.isLoading = true;
-    this.auth.saveUserInfo(this.saveUserInfoForm.value, emailSign).subscribe({
+    this.auth.saveUserInfo(
+      this.userImg.name,
+      this.saveUserInfoForm.value.regionId,
+      this.saveUserInfoForm.value.cityId,
+      this.saveUserInfoForm.value.countryId,
+      this.saveUserInfoForm.value.region,
+      this.saveUserInfoForm.value.city,
+      this.saveUserInfoForm.value.country,
+      this.saveUserInfoForm.value.role,
+     this.saveUserInfoForm.value.specialMark,
+      this.saveUserInfoForm.value.Contacts, emailSign).subscribe({
       next: (userInfo: any) => {
         if (userInfo.status == 'ok') {
           this.isLoading = false;
-          this.auth.autoLogin(true,emailSign, passwordSign);
+          this.auth.autoLogin(emailSign, passwordSign);
         } else {
           console.log(userInfo.details);
+          this.isLoading = false;
           this.notify.errorNotification(userInfo.details.email, 'login failed');
         }
       },
     });
   }
+ processFile(imageInput:any) {
+    const file: File = imageInput.files[0];
+    this.upload(file);
+  }
+
+  upload(file: any) {
+    const formData = new FormData();
+    formData.append('file', file);
+    this.userImg = formData.get('file');
+    console.log(this.userImg);
+  }
+
 }

@@ -12,10 +12,7 @@
           </div>
 
           <p class="section-info">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            Reprehenderit quibusdam voluptatum similique tempora iusto, eligendi
-            autem, fugiat molestias ut rem quis? Officiis vero optio iste, ipsa
-            sit veniam voluptas earum.
+            {{ companyInfo?.description }}
           </p>
         </div>
       </div>
@@ -27,16 +24,100 @@
           </div>
 
           <p class="section-info">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            Reprehenderit quibusdam voluptatum similique tempora iusto, eligendi
-            autem, fugiat molestias ut rem quis? Officiis vero optio iste, ipsa
-            sit veniam voluptas earum.
+            we reach up to
+            <span>+{{ companyInfo?.numOfEmployee }} </span>Employees
           </p>
         </div>
         <div class="svg-side col-md-6 col-sm-12">
           <ng-lottie [options]="aboutUs"></ng-lottie>
         </div>
       </div>
+    </div>
+    <div class="row">
+      <!-- About -->
+      <div id="about" class="basic-4">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-12">
+              <h2>About The Team</h2>
+              <p class="p-heading p-large">
+                Meat our team of specialized marketers and business developers
+                which will help you research new products and launch them in new
+                emerging markets
+              </p>
+            </div>
+            <!-- end of col -->
+          </div>
+          <!-- end of row -->
+          <div class="row">
+            <div class="team-all">
+              <!-- Team Member -->
+              <div
+                class="team-member"
+                *ngFor="let team of companyInfo?.companyTeams"
+              >
+                <div class="image-wrapper">
+                  <img
+                    class="img-fluid"
+                    src="../../../../assets/images/team-member-1.svg"
+                    alt="alternative"
+                  />
+                </div>
+                <!-- end of image-wrapper -->
+                <p class="p-large"><strong>Lacy Whitelong</strong></p>
+                <p class="job-title">{{ team.position }}</p>
+                <span class="social-icons">
+                  <span class="fa-stack">
+                    <a href="#your-link">
+                      <i class="bi bi-facebook"></i>
+                    </a>
+                  </span>
+                  <span class="fa-stack">
+                    <a href="#your-link">
+                      <i class="bi bi-twitter"></i>
+                    </a>
+                  </span>
+                </span>
+                <!-- end of social-icons -->
+              </div>
+              <!-- end of team-member -->
+
+              <!-- Team Member -->
+              <div class="team-member">
+                <div class="image-wrapper">
+                  <img
+                    class="img-fluid"
+                    src="../../../../assets/images/team-member-2.svg"
+                    alt="alternative"
+                  />
+                </div>
+                <!-- end of image wrapper -->
+                <p class="p-large"><strong>Chris Brown</strong></p>
+                <p class="job-title">Online Marketer</p>
+                <span class="social-icons">
+                  <span class="fa-stack">
+                    <a href="#your-link">
+                      <i class="bi bi-facebook"></i>
+                    </a>
+                  </span>
+                  <span class="fa-stack">
+                    <a href="#your-link">
+                      <i class="bi bi-twitter"></i>
+                    </a>
+                  </span>
+                </span>
+                <!-- end of social-icons -->
+              </div>
+              <!-- end of team-member -->
+            </div>
+            <!-- end of col -->
+          </div>
+          <!-- end of row -->
+        </div>
+        <!-- end of container -->
+      </div>
+      <!-- end of basic-4 -->
+      <!-- end of about -->
     </div>
   </div>
 </div>

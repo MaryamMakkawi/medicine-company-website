@@ -16,18 +16,57 @@ import { ApiService } from './api.service';
 export class AuthService {
   user$ = new BehaviorSubject<User | null>(null);
 
-  constructor(private router: Router, private api: ApiService,private http: HttpClient) {}
+  constructor(
+    private router: Router,
+    private api: ApiService,
+    private http: HttpClient
+  ) {}
 
   login(email: string, password: string) {
     return this.api.post(environment.base + '/site/login', { email, password });
   }
 
-  signup(userSign: any) {
-    return this.api.post(environment.base + '/site/signup', userSign);
+  signup(
+    accessToken: string,
+    email: string,
+    password: string,
+    firstName: string,
+    lastName: string,
+    id: number
+  ) {
+    return this.api.post(environment.base + '/site/signup', {
+      accessToken,
+      email,
+      password,
+      firstName,
+      lastName,
+      id,
+    });
   }
-  saveUserInfo(userSignInfo: any, email: string) {
+  saveUserInfo(
+    img: string,
+    regionId: number,
+    cityId: number,
+    countryId: number,
+    region: string,
+    city: string,
+    country: string,
+    role: number,
+    specialMark: string,
+    Contacts: string[],
+    email: string
+  ) {
     return this.api.post(environment.base + '/site/save-user-info', {
-      userSignInfo,
+      img,
+      regionId,
+      cityId,
+      countryId,
+      region,
+      city,
+      country,
+      role,
+      specialMark,
+      Contacts,
       email,
     });
   }
@@ -35,26 +74,38 @@ export class AuthService {
   public handleAuth(
     accessToken: string,
     email: string,
+    password: string,
     firstName: string,
     lastName: string,
     id: number,
     img: string,
     regionId: number,
-    role: string,
+    cityId: number,
+    countryId: number,
+    region: string,
+    city: string,
+    country: string,
+    role: number,
     specialMark: string,
-    userContacts: string[]
+    Contacts: string[]
   ) {
     const user = new User(
       accessToken,
       email,
+      password,
       firstName,
       lastName,
       id,
       img,
       regionId,
+      cityId,
+      countryId,
+      region,
+      city,
+      country,
       role,
       specialMark,
-      userContacts
+      Contacts
     );
     localStorage.setItem('userData', JSON.stringify(user));
     this.user$.next(user);
@@ -62,62 +113,78 @@ export class AuthService {
     this.router.navigate(['/layout/home']);
   }
 
-  autoLogin(
-    updateUserInfo: boolean = false,
-    email?: string,
-    password?: string
-  ) {
+  autoLogin(email?: string, password?: string) {
     if (!localStorage.getItem('userData') && !(email && password)) {
       return;
     }
-   if (localStorage.getItem('userData') && updateUserInfo== false) {
+    if (localStorage.getItem('userData')) {
       const userData: {
         accessToken: string;
         email: string;
+        password: string;
         firstName: string;
         lastName: string;
         id: number;
         img: string;
         regionId: number;
-        role: string;
+        cityId: number;
+        countryId: number;
+        region: string;
+        city: string;
+        country: string;
+        role: number;
         specialMark: string;
-        userContacts: string[];
+        Contacts: string[];
       } = JSON.parse(localStorage.getItem('userData')!);
       const loadedUser = new User(
         userData.accessToken,
         userData.email,
+        userData.password,
         userData.firstName,
         userData.lastName,
         userData.id,
         userData.img,
         userData.regionId,
+        userData.cityId,
+        userData.countryId,
+        userData.region,
+        userData.city,
+        userData.country,
         userData.role,
         userData.specialMark,
-        userData.userContacts
+        userData.Contacts
       );
       this.user$.next(loadedUser);
       loadedUser.isAuth = true;
       this.router.navigate(['/layout/home']);
-    } else if (email && password && updateUserInfo==true) {
-      this.http.post(environment.base + '/site/login', { email, password }).subscribe((res: any) => {
-        if (res.status === 'ok') {
-          this.handleAuth(
-            res.userInfo.accessToken,
-            res.userInfo.email,
-            res.userInfo.firstName,
-            res.userInfo.lastName,
-            res.userInfo.id,
-            res.userInfo.img,
-            res.userInfo.regionId,
-            res.userInfo.role,
-            res.userInfo.specialMark,
-            res.userInfo.userContacts
-          );
-          this.router.navigate(['/layout/home']);
-        } else {
-          console.log(res.details);
-        }
-      });
+    } else if (email && password) {
+      this.http
+        .post(environment.base + '/site/login', { email, password })
+        .subscribe((res: any) => {
+          if (res.status === 'ok') {
+            this.handleAuth(
+              res.userInfo.accessToken,
+              res.userInfo.email,
+              res.userInfo.password,
+              res.userInfo.firstName,
+              res.userInfo.lastName,
+              res.userInfo.id,
+              res.userInfo.img,
+              res.userInfo.regionId,
+              res.userInfo.cityId,
+              res.userInfo.countryId,
+              res.userInfo.region,
+              res.userInfo.city,
+              res.userInfo.country,
+              res.userInfo.role,
+              res.userInfo.specialMark,
+              res.userInfo.Contacts
+            );
+            this.router.navigate(['/layout/home']);
+          } else {
+            console.log(res.details);
+          }
+        });
     }
   }
 

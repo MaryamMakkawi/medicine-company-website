@@ -25,7 +25,6 @@ export class HomeComponent implements OnInit {
   currentDay?: number;
   currentYear?: number;
 
-  id: number | undefined;
   offer: Offer | undefined;
   offerAll: Offer[] | undefined;
   offerDetails: OfferDetails[] = [];
@@ -53,13 +52,13 @@ export class HomeComponent implements OnInit {
   displayOfferDetails(id: number) {
     // One Offer
     this.api
-      .get(`http://localhost/aphamea_project/web/index.php/offer/get?id=${id}`)
+      .get(`http://localhost/aphamea_project/web/index.php/offer/get?id=${id+1}`)
       .subscribe({
         next: (res: any) => {
           if (res.status == 'ok') {
+            console.log(res);
             this.offer = res.offer;
             this.offerDetails = res.offerDetails;
-            console.log(res);
           }
         },
       });

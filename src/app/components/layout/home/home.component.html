@@ -28,7 +28,7 @@
     [smartBackspace]="true"
     [backSpeed]="50"
     [showCursor]="true"
-    [strings]="['amazing.', 'amtazia.', 'amtholyy.']"
+    [strings]="['Energy.', 'patience.', 'Success.', 'health.']"
     class="landing-typed-string"
   >
     <h5 class="promo-text">Confidence and Efficiency</h5>
@@ -49,7 +49,7 @@
       [grabCursor]="true"
       [centeredSlides]="true"
       [slidesPerView]="'auto'"
-      [initialSlide]="1"
+      [initialSlide]="0"
       [lazy]="true"
       [coverflowEffect]="{
         rotate: 50,
@@ -69,10 +69,14 @@
         <div class="cards-container">
           <div class="offer-card">
             <div class="contentBx">
-              <h2 class="mb-3">Offer {{ offerItem?.name }}</h2>
+              <h2 class="mb-3">{{ offerItem?.name }}</h2>
               <div class="size">
                 <h3 class="my-2">order Count :</h3>
-                <span> {{ offerItem?.orderCount }}</span>
+                <span>
+                  {{
+                    offerItem?.orderCount == null ? "0" : offerItem?.orderCount
+                  }}</span
+                >
                 <!-- <span>8</span>
                 <span>9</span>
                 <span>10</span> -->
@@ -87,7 +91,9 @@
               </div>
               <div class="color">
                 <h3 class="my-2">offer Status :</h3>
-                <span>{{ offerItem?.offerStatus }} </span>
+                <span
+                  >{{ offerItem?.offerStatus === 0 ? "Active" : "Not Active" }}
+                </span>
                 <!-- <span>2</span>
                 <span>3</span> -->
               </div>
@@ -96,7 +102,7 @@
                 data-bs-toggle="modal"
                 data-bs-target="#offerDetailsModal"
               >
-                <span (click)="displayOfferDetails(i + 1)" class="pe-1"
+                <span (click)="displayOfferDetails(i)" class="pe-1"
                   >Find out</span
                 >
               </button>
@@ -162,7 +168,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="offerDetailsModalLabel">
-              offer details {{ offer?.name }}
+              {{ offer?.name }} details
             </h5>
             <button
               type="button"
@@ -180,9 +186,6 @@
                   <th scope="col">public price</th>
                   <th scope="col">net price</th>
                   <th scope="col">quantity</th>
-                  <th scope="col">extra medicine name</th>
-                  <th scope="col">extra price</th>
-                  <th scope="col">extra netPrice</th>
                   <th scope="col">extra quantity</th>
                 </tr>
               </thead>
@@ -192,9 +195,6 @@
                   <td>{{ item.medicinePrice }}</td>
                   <td>{{ item.medicineNetPrice }}</td>
                   <td>{{ item.quantity }}</td>
-                  <td>{{ item.extraMedicineName }}</td>
-                  <td>{{ item.extraMedicinePrice }}</td>
-                  <td>{{ item.extraMedicineNetPrice }}</td>
                   <td>{{ item.extraQuantity }}</td>
                 </tr>
               </tbody>
@@ -208,7 +208,7 @@
             >
               Cancel
             </button>
-            <button type="submit" class="btn btn-primary">Send</button>
+            <!-- <button type="submit" class="btn btn-primary">Send</button> -->
           </div>
         </div>
       </div>

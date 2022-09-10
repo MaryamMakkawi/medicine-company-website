@@ -3,14 +3,14 @@ export class Medicine {
     public barcode: string,
     public productName: string,
     public indications: string,
-    public packing: string,
+    public packing: number,
     public composition: number,
     public imgs: [],
     public expiredDate: number,
-    public price: string,
-    public netPrice: string,
-    public pharmaceuticalFormId: string,
-    public categoryId: string,
+    public price: number,
+    public netPrice: number,
+    public pharmaceuticalForm: {id:number,name:string},
+    public category: {id:number,name:string},
 
   ) {}
 }
