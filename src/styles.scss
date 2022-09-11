@@ -11,13 +11,13 @@
 
 @mixin Subtitle1 {
   font-family: "Alegreya Sans SC", sans-serif;
-  font-size: 16px;
+  font-size: 12px;
   font-weight: 700;
 }
 
 @mixin Subtitle2 {
   font-family: "Alegreya Sans SC", sans-serif;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
 }
 
@@ -29,13 +29,13 @@
 
 @mixin Body2 {
   font-family: "Alegreya Sans SC", sans-serif;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
 }
 
 @mixin BUTTON {
   font-family: "Alegreya Sans SC", sans-serif;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -43,7 +43,7 @@
 
 @mixin Caption {
   font-family: "Alegreya Sans SC", sans-serif;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 400;
 }
 
@@ -55,7 +55,7 @@
 }
 @mixin BUTTON {
   font-family: "Alegreya Sans SC", sans-serif;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -182,15 +182,16 @@ h6 {
 }
 
 p {
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 20px;
+  font-weight: 400;
   line-height: 20px;
   letter-spacing: 0.5px;
   margin: 15px 0 25px;
+  overflow-wrap: break-word;
 }
 
 span {
-  font-size: 12px;
+  font-size: 17px;
 }
 ul,
 li {
@@ -499,7 +500,7 @@ a {
         margin-left: 15px;
         > span {
           color: $primary-500;
-          font-size: 14px;
+          font-size: 20px;
           font-weight: 500;
           &:hover {
             opacity: 0.8;
@@ -825,7 +826,7 @@ a {
       top: 70%;
       left: 50%;
       transform: translate(-50%, -50%);
-      font-size: 4em;
+      font-size: 5em;
       font-weight: 800;
       font-style: italic;
       opacity: 0.08;
@@ -865,7 +866,7 @@ a {
           height: 26px;
           text-align: center;
           line-height: 26px;
-          font-size: 14px;
+          font-size: 16px;
           display: inline-block;
           color: #fff;
           background: $primary-500;
@@ -890,7 +891,7 @@ a {
       :is(.size, .color) h3 {
         color: $primary-600;
         font-weight: 300;
-        font-size: 14px;
+        font-size: 16px;
         text-transform: uppercase;
         letter-spacing: 2px;
         margin-right: 10px;
@@ -958,7 +959,7 @@ a {
 }
 
 .offer-table {
-  font-size: 13px;
+  font-size: 17px;
   thead tr:nth-child(1) th {
     color: #fff;
     background: #0059ae;
@@ -1003,7 +1004,7 @@ a {
     margin-bottom: 50px;
     .section-title {
       .title-tag {
-        font-size: 20px;
+        font-size: 25px;
         font-weight: 700;
         color: $primary-500;
         display: inline-block;
@@ -1064,13 +1065,12 @@ a {
   background-image: linear-gradient(
       rgba($primary-500, 0.3),
       rgba($primary-500, 0.3)
-    ),
-    url("assets/images/vitamin.jpg");
+    );
+    // url("assets/images/vitamin.jpg");
   background-size: cover;
   background-position: center;
   position: relative;
   height: 18em;
-  // width: 14em;
   font-size: 1.5em;
   color: white;
   border-radius: 1em;
@@ -1088,7 +1088,7 @@ a {
   }
 
   p {
-    font-size: 0.75em;
+    font-size: 0.5em;
     margin-top: 0.5em;
     line-height: 2em;
   }
@@ -1131,6 +1131,22 @@ a {
     &:before,
     &:after {
       transform: scale(1);
+    }
+  }
+  &.articleImg:before {
+    background: transparent;
+
+  }
+
+  &.articleImg:after {
+    background: transparent;
+  }
+  &.articleImg:hover {
+    transform:0;
+    color: $primary-500;
+    &:before,
+    &:after {
+      transform: 0;
     }
   }
 }

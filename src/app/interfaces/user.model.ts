@@ -22,21 +22,3 @@ export class User {
     return this.accessToken;
   }
 }
-// {
-//   "id": 1,
-//   "firstName": "maryam",
-//   "lastName": "makkawi",
-//   "regionId": null,
-//   "cityId": null,
-//   "countryId": null,
-//   "img": null,
-//   "role": null,
-//   "accessToken": "eyJ0eXAiOiJKV1QiLCJhbGciOiJub25lIiwianRpIjoiMSJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3QiLCJhdWQiOiJodHRwOlwvXC9sb2NhbGhvc3QiLCJqdGkiOiIxIiwiaWF0IjoxNjYyODI0OTQ1LCJuYmYiOjE2NjI4MjUwMDUsImV4cCI6MTc2MjcyNTk0NCwidWlkIjoiMSJ9.",
-//   "email": "admin@admin.com",
-//   "password": "$2y$13$njzERsIq1Ac1lgDEENV78Oy94ZNulagtt6dbRN55I7SZQ9P4g7boO",
-//   "specialMark": null,
-//   "contacts": [],
-//   "region": null,
-//   "city": null,
-//   "country": null
-// }

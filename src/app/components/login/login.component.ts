@@ -11,6 +11,7 @@ import { User } from 'src/app/interfaces/user.model';
 import { NotifierService } from '../../services/notifier.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { MustMatch } from '../../helpers/must-match.validator';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-login',
