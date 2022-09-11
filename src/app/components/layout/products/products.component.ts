@@ -18,6 +18,7 @@ export class ProductsComponent implements OnInit {
         if (medicinesApi.status == 'ok') {
           this.medicines = medicinesApi.medicines;
           console.log(this.medicines);
+          console.log(medicinesApi);
         }
       },
     });

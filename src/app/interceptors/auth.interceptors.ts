@@ -35,7 +35,6 @@ export class AuthInterceptor implements HttpInterceptor {
             'access-token': user.getToken(),
           },
         });
-        console.log(modifiedReq);
         return next.handle(modifiedReq).pipe(
           catchError((err) => {
             return throwError(() => err.error.message);

@@ -83,7 +83,7 @@
               </div>
               <div class="color">
                 <h3 class="my-2">
-                  Date : {{ offerItem?.creationDate | date: "longDate" }}
+                 expireDate : {{ offerItem?.creationDate }} Years
                 </h3>
                 <!-- <span>1</span>
                 <span>2</span>
@@ -122,9 +122,9 @@
       <h2 class="main-title">Articales</h2>
     </div>
     <swiper
-      [slidesPerView]="3"
+      [slidesPerView]="articleAll?.length"
       [spaceBetween]="20"
-      [slidesPerGroup]="3"
+      [slidesPerGroup]="articleAll?.length"
       [loop]="true"
       [loopFillGroupWithBlank]="true"
       [pagination]="{
@@ -135,20 +135,22 @@
     >
       <ng-template
         class="freeMode-slider"
-        *ngFor="let slide of [1, 2, 3, 4, 5, 6]"
+        *ngFor="let article of articleAll; let i = index"
         swiperSlide
       >
         <div>
-          <a class="artical-card mb-3">
+          <a
+            class="artical-card mb-3"
+            [style.background-image]="'url(' + article.imgs[0] + ')'"
+            (click)="onArticle(i)"
+            data-bs-toggle="modal"
+            data-bs-target="#staticBackdrop"
+          >
             <div>
-              <h1>Vitamin</h1>
-              <p>
-                Vitamins and minerals, such as iron, calcium and vitamin C, are
-                essential nutrients that your body needs in small amounts to
-                work properly.
-              </p>
+              <h1>{{ article?.type == 1 ? "Article" : "ads" }}</h1>
+              <p>Click for Watch Content the Article.</p>
               <div class="date">
-                {{ currentDay }} / {{ currentDate }} / {{ currentYear }}
+                {{ article?.publishedDate }}
               </div>
             </div>
           </a>
@@ -156,7 +158,6 @@
       </ng-template>
     </swiper>
     <!-- offer details modal -->
-
     <div
       class="modal fade"
       id="offerDetailsModal"
@@ -209,6 +210,73 @@
               Cancel
             </button>
             <!-- <button type="submit" class="btn btn-primary">Send</button> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- article details modal -->
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="staticBackdrop"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="staticBackdropLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title" id="staticBackdropLabel">Article</h3>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <swiper
+              [slidesPerView]="articleImg?.length"
+              [spaceBetween]="20"
+              [slidesPerGroup]="articleImg?.length"
+              [loop]="true"
+              [loopFillGroupWithBlank]="true"
+              [pagination]="{
+                clickable: true
+              }"
+              [navigation]="true"
+              class="mySwiper freeMode-swiper-control"
+            >
+              <ng-template
+                class="freeMode-slider"
+                *ngFor="let img of articleImg; let i = index"
+                swiperSlide
+              >
+                <div>
+                  <a
+                    class="artical-card  mb-3 articleImg"
+                    [style.background-image]="'url(' + img + ')'"
+                    (click)="onArticle(i)"
+                    data-bs-toggle="modal"
+                    data-bs-target="#staticBackdrop"
+                  >
+                  </a>
+                </div>
+              </ng-template>
+            </swiper>
+
+           <p> {{ articleContent }}</p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
           </div>
         </div>
       </div>

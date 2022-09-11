@@ -116,7 +116,7 @@
               <label class="file-input__label" for="file-input">
                 <div class="user-img">
                   <img
-                    src="{{ user.userImage || '../../../assets/images/avatar-default.jpg' }}"
+                    [src]="user.userImage !== null ? user.userImage : './../../../../assets/img/avatars/avatar-default.jpg'"
                   />
                   <i class="bi bi-plus"></i>
                 </div>
@@ -308,7 +308,7 @@
       <div class="user-profile">
         <div class="user-img">
           <img
-            src="{{ user.userImage || '../../../assets/images/avatar-default.jpg' }}"
+          [src]="user.userImage !== null ? user.userImage : './../../../../assets/img/avatars/avatar-default.jpg'"
           />
         </div>
         <div>
@@ -327,17 +327,11 @@
       >
         <li><a class="link" routerLink="home">home</a></li>
         <li><a class="link" routerLink="about">about</a></li>
-        <li><a class="link">contacts</a></li>
-        <li><a class="link">projects</a></li>
-        <li><a class="link">services</a></li>
-        <li><a class="link">portfolio</a></li>
-        <li><a class="link">Our Services</a></li>
-        <li><a class="link">Expert Team</a></li>
-        <li><a class="link">Latest News</a></li>
-        <li><a class="link">Terms</a></li>
-        <li><a class="link">Privacy</a></li>
-        <li><a class="link">Policy</a></li>
-        <li><a class="link">Contact</a></li>
+        <li><a class="link" routerLink="contacts">contacts</a></li>
+        <li><a class="link" routerLink="products">products</a></li>
+        <li style="cursor: pointer;">
+          <a class="dropdown-item logout-btn" (click)="onLogOut()">Logout</a>
+        </li>
       </ul>
     </div>
   </div>
