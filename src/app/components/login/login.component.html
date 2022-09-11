@@ -174,7 +174,7 @@
       "
     >
       <!-- Image Select -->
-      <div class="file-input row mb-3" >
+      <div class="file-input row mb-3">
         <input
           type="file"
           name="file-input"
@@ -183,7 +183,6 @@
           class="file-input__input"
           #img
           (change)="processFile(img)"
-
         />
         <label class="file-input__label" for="file-input">
           <div class="user-img">
@@ -208,34 +207,30 @@
         <label for="inputRegion" class="form-label me-2">Region</label>
         <select id="inputRegion" class="form-select" formControlName="region">
           <option selected>Choose...</option>
-          <option  value="m">m</option>
-          <option  value="m">m</option>
-          <option  value="m">m</option>
-          <option  value="m">m</option>
+          <option value="m">m</option>
+          <option value="m">m</option>
+          <option value="m">m</option>
+          <option value="m">m</option>
         </select>
 
         <!-- City -->
         <label for="inputCity" class="form-label ms-2 me-2">City</label>
         <select id="inputCity" class="form-select" formControlName="city">
           <option selected>Choose...</option>
-          <option  value="m">m</option>
-          <option  value="m">m</option>
-          <option  value="m">m</option>
-          <option  value="m">m</option>
+          <option value="m">m</option>
+          <option value="m">m</option>
+          <option value="m">m</option>
+          <option value="m">m</option>
         </select>
 
         <!-- Country -->
         <label for="inputCountry" class="form-label ms-2 me-2">Country</label>
-        <select
-          id="inputCountry"
-          class="form-select"
-          formControlName="country"
-        >
+        <select id="inputCountry" class="form-select" formControlName="country">
           <option selected>Choose...</option>
           <option value="m">m</option>
-          <option  value="m">m</option>
-          <option  value="m">m</option>
-          <option  value="m">m</option>
+          <option value="m">m</option>
+          <option value="m">m</option>
+          <option value="m">m</option>
         </select>
       </div>
       <!-- Special Mark-->
@@ -251,9 +246,33 @@
           formControlName="specialMark"
         />
       </div>
+
+      <!-- Contact  -->
+      <div class="d-flex mt-3">
+        <!-- Contact Select Type-->
+        <div formArrayName="contactType" class="d-flex">
+          <label for="inputContact" class="form-label ms-2 me-2">Contact</label>
+          <select id="inputContact" class="form-select me-2 ms-2">
+            <option selected value="0">Email</option>
+            <option value="1">Phone</option>
+          </select>
+          <div *ngFor="let input of contactType.controls" class="d-flex flex-wrap">
+            <!-- Email Contact -->
+            <input type="email" class="form-control" placeholder="Email" />
+            <!-- Phone Contact -->
+            <input type="number" class="form-control" placeholder="Phone" />
+            <br>
+          </div>
+          <br />
+        </div>
+        <button class="add-input" (click)="addInput()">
+          <i class="bi bi-plus"></i>
+        </button>
+      </div>
+
       <button
         *ngIf="!isLoading"
-        class="submit-btn sign-btn mt-5"
+        class="submit-btn sign-btn mt-3"
         type="submit"
         [disabled]="!saveUserInfoForm.valid"
         [style.opacity]="!saveUserInfoForm.valid ? '0.7' : '1'"

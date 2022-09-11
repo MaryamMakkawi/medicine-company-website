@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {
   AbstractControlOptions,
+  FormArray,
   FormBuilder,
   FormControl,
   FormGroup,
@@ -11,7 +12,6 @@ import { User } from 'src/app/interfaces/user.model';
 import { NotifierService } from '../../services/notifier.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { MustMatch } from '../../helpers/must-match.validator';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -20,11 +20,12 @@ import { Observable } from 'rxjs';
 })
 export class LoginComponent implements OnInit {
   toggleLoginActive: boolean = true;
-  toggleCompleteInfoForm: boolean = false;
+  toggleCompleteInfoForm: boolean = true;
+  isEmail: boolean = false;
   isLoading: boolean = false;
   errorMassage: string = '';
   users: User[] = [];
-  userImg:any;
+  userImg: any;
   roles: string[] = [
     'Doctor',
     'Pharmacist',
@@ -83,6 +84,7 @@ export class LoginComponent implements OnInit {
       role: [''],
       specialMark: [''],
       img: [null],
+      contactType: this.fb.array(['']),
     });
 
     // loginForm
@@ -128,6 +130,9 @@ export class LoginComponent implements OnInit {
   }
   get userInfoF() {
     return this.saveUserInfoForm.controls;
+  }
+  get contactType(): FormArray {
+    return this.saveUserInfoForm.get('contactType') as FormArray;
   }
   get loginF() {
     return this.loginForm.controls;
@@ -196,39 +201,65 @@ export class LoginComponent implements OnInit {
           } else {
             console.log(user.details);
             this.isLoading = false;
-            this.notify.errorNotification(user.details.email, 'login failed');
+            this.notify.errorNotification(user.details.email, 'Signup failed');
+          }
+        },
+      });
+  }
+  // Save User Info
+  onSaveInfo(emailSign: string, passwordSign: string) {
+    this.isLoading = true;
+
+    this.auth
+      .saveUserInfo(
+        this.userImg.name,
+        this.saveUserInfoForm.value.regionId,
+        this.saveUserInfoForm.value.cityId,
+        this.saveUserInfoForm.value.countryId,
+        this.saveUserInfoForm.value.region,
+        this.saveUserInfoForm.value.city,
+        this.saveUserInfoForm.value.country,
+        this.saveUserInfoForm.value.role,
+        this.saveUserInfoForm.value.specialMark,
+        this.saveUserInfoForm.value.Contacts,
+        emailSign
+      )
+      .subscribe({
+        next: (userInfo: any) => {
+          if (userInfo.status == 'ok') {
+            this.isLoading = false;
+            this.auth.autoLogin(emailSign, passwordSign);
+          } else {
+            console.log(userInfo.details);
+            this.isLoading = false;
+            this.notify.errorNotification(
+              userInfo.details,
+              'Save Info failed'
+            );
           }
         },
       });
   }
 
-  // Save User Info
-  onSaveInfo(emailSign: string, passwordSign: string) {
-    this.isLoading = true;
-    this.auth.saveUserInfo(
-      this.userImg.name,
-      this.saveUserInfoForm.value.regionId,
-      this.saveUserInfoForm.value.cityId,
-      this.saveUserInfoForm.value.countryId,
-      this.saveUserInfoForm.value.region,
-      this.saveUserInfoForm.value.city,
-      this.saveUserInfoForm.value.country,
-      this.saveUserInfoForm.value.role,
-     this.saveUserInfoForm.value.specialMark,
-      this.saveUserInfoForm.value.Contacts, emailSign).subscribe({
-      next: (userInfo: any) => {
-        if (userInfo.status == 'ok') {
-          this.isLoading = false;
-          this.auth.autoLogin(emailSign, passwordSign);
-        } else {
-          console.log(userInfo.details);
-          this.isLoading = false;
-          this.notify.errorNotification(userInfo.details.email, 'login failed');
-        }
-      },
+  // Input Array
+  newContactType(contact: any): FormGroup {
+    return this.fb.group({
+      type: [contact.type],
+      value: [contact.value],
     });
   }
- processFile(imageInput:any) {
+  addInput() {
+
+    const contact = {
+      type: '',
+      value: '',
+    };
+console.log(this.saveUserInfoForm.value);
+    this.contactType.push(this.newContactType(contact));
+  }
+
+
+  processFile(imageInput: any) {
     const file: File = imageInput.files[0];
     this.upload(file);
   }
@@ -239,5 +270,4 @@ export class LoginComponent implements OnInit {
     this.userImg = formData.get('file');
     console.log(this.userImg);
   }
-
 }
