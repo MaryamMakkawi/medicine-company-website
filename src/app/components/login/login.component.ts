@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {
   AbstractControlOptions,
+  FormArray,
   FormBuilder,
   FormControl,
   FormGroup,
@@ -11,7 +12,7 @@ import { User } from 'src/app/interfaces/user.model';
 import { NotifierService } from '../../services/notifier.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { MustMatch } from '../../helpers/must-match.validator';
-import { Observable } from 'rxjs';
+import { ApiService } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-login',
@@ -24,7 +25,7 @@ export class LoginComponent implements OnInit {
   isLoading: boolean = false;
   errorMassage: string = '';
   users: User[] = [];
-  userImg:any;
+  userImg: any;
   roles: string[] = [
     'Doctor',
     'Pharmacist',
@@ -41,7 +42,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private auth: AuthService,
-    private notify: NotifierService
+    private notify: NotifierService,
+    private api:ApiService
   ) {}
 
   ngOnInit(): void {
@@ -83,6 +85,12 @@ export class LoginComponent implements OnInit {
       role: [''],
       specialMark: [''],
       img: [null],
+      contactType: this.fb.array([
+        this.fb.group({
+          type: [''],
+          value: [''],
+        }),
+      ]),
     });
 
     // loginForm
@@ -128,6 +136,9 @@ export class LoginComponent implements OnInit {
   }
   get userInfoF() {
     return this.saveUserInfoForm.controls;
+  }
+  get contactType(): FormArray {
+    return this.saveUserInfoForm.get('contactType') as FormArray;
   }
   get loginF() {
     return this.loginForm.controls;
@@ -196,41 +207,58 @@ export class LoginComponent implements OnInit {
           } else {
             console.log(user.details);
             this.isLoading = false;
-            this.notify.errorNotification(user.details.email, 'login failed');
+            this.notify.errorNotification(user.details.email, 'Signup failed');
+          }
+        },
+      });
+  }
+  // Save User Info
+  onSaveInfo(emailSign: string, passwordSign: string) {
+    console.log(this.saveUserInfoForm);
+    this.isLoading = true;
+    this.auth
+      .saveUserInfo(
+        this.userImg.name,
+        this.saveUserInfoForm.value.regionId,
+        this.saveUserInfoForm.value.cityId,
+        this.saveUserInfoForm.value.countryId,
+        this.saveUserInfoForm.value.region,
+        this.saveUserInfoForm.value.city,
+        this.saveUserInfoForm.value.country,
+        this.saveUserInfoForm.value.role,
+        this.saveUserInfoForm.value.specialMark,
+        this.saveUserInfoForm.value.contactType,
+        emailSign
+      )
+      .subscribe({
+        next: (userInfo: any) => {
+          if (userInfo.status == 'ok') {
+            this.isLoading = false;
+            this.auth.autoLogin(emailSign, passwordSign);
+          } else {
+            console.log(userInfo.details);
+            this.isLoading = false;
+            this.notify.errorNotification(userInfo.details, 'Save Info failed');
           }
         },
       });
   }
 
-  // Save User Info
-  onSaveInfo(emailSign: string, passwordSign: string) {
-    this.isLoading = true;
-    this.auth.saveUserInfo(
-      this.userImg.name,
-      this.saveUserInfoForm.value.regionId,
-      this.saveUserInfoForm.value.cityId,
-      this.saveUserInfoForm.value.countryId,
-      this.saveUserInfoForm.value.region,
-      this.saveUserInfoForm.value.city,
-      this.saveUserInfoForm.value.country,
-      this.saveUserInfoForm.value.role,
-     this.saveUserInfoForm.value.specialMark,
-      this.saveUserInfoForm.value.Contacts, emailSign).subscribe({
-      next: (userInfo: any) => {
-        if (userInfo.status == 'ok') {
-          this.isLoading = false;
-          this.auth.autoLogin(emailSign, passwordSign);
-        } else {
-          console.log(userInfo.details);
-          this.isLoading = false;
-          this.notify.errorNotification(userInfo.details.email, 'login failed');
-        }
-      },
-    });
+  // Input Array
+  newContactType() {
+    this.contactType.push(
+      this.fb.group({
+        type: [''],
+        value: [''],
+      })
+    );
   }
- processFile(imageInput:any) {
+
+
+  processFile(imageInput: any) {
     const file: File = imageInput.files[0];
-    this.upload(file);
+    this.upload(file)
+    // .subscribe((res=>{console.log(res);}));
   }
 
   upload(file: any) {
@@ -238,6 +266,6 @@ export class LoginComponent implements OnInit {
     formData.append('file', file);
     this.userImg = formData.get('file');
     console.log(this.userImg);
+    // return this.api.post('http://localhost/aphamea_project/web/users/images',this.userImg.name)
   }
-
 }

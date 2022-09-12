@@ -73,7 +73,7 @@ form {
   justify-content: center;
   flex-direction: column;
   padding: 0 50px;
-  height: 100%;
+  min-height: 100%;
   text-align: center;
 }
 
@@ -326,4 +326,29 @@ form {
     top: 8px;
     color: blue;
   }
+}
+
+
+.add-input{
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  outline: none;
+  background: white;
+  border: none;
+  margin-left: 10px;
+  box-shadow: 0px 0px 10px 0px #33348e;
+  i{
+    padding: 2px;
+    color:#33348e ;
+  }
+
+}
+.sign{
+  overflow: overlay;
+}
+select.contact{
+  padding: 5px;
+    height: 30%;
+    width: 30%;
 }
