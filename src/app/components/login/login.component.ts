@@ -12,6 +12,7 @@ import { User } from 'src/app/interfaces/user.model';
 import { NotifierService } from '../../services/notifier.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { MustMatch } from '../../helpers/must-match.validator';
+import { ApiService } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-login',
@@ -20,8 +21,7 @@ import { MustMatch } from '../../helpers/must-match.validator';
 })
 export class LoginComponent implements OnInit {
   toggleLoginActive: boolean = true;
-  toggleCompleteInfoForm: boolean = true;
-  isEmail: boolean = false;
+  toggleCompleteInfoForm: boolean = false;
   isLoading: boolean = false;
   errorMassage: string = '';
   users: User[] = [];
@@ -42,7 +42,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private auth: AuthService,
-    private notify: NotifierService
+    private notify: NotifierService,
+    private api:ApiService
   ) {}
 
   ngOnInit(): void {
@@ -84,7 +85,12 @@ export class LoginComponent implements OnInit {
       role: [''],
       specialMark: [''],
       img: [null],
-      contactType: this.fb.array(['']),
+      contactType: this.fb.array([
+        this.fb.group({
+          type: [''],
+          value: [''],
+        }),
+      ]),
     });
 
     // loginForm
@@ -208,8 +214,8 @@ export class LoginComponent implements OnInit {
   }
   // Save User Info
   onSaveInfo(emailSign: string, passwordSign: string) {
+    console.log(this.saveUserInfoForm);
     this.isLoading = true;
-
     this.auth
       .saveUserInfo(
         this.userImg.name,
@@ -221,7 +227,7 @@ export class LoginComponent implements OnInit {
         this.saveUserInfoForm.value.country,
         this.saveUserInfoForm.value.role,
         this.saveUserInfoForm.value.specialMark,
-        this.saveUserInfoForm.value.Contacts,
+        this.saveUserInfoForm.value.contactType,
         emailSign
       )
       .subscribe({
@@ -232,36 +238,27 @@ export class LoginComponent implements OnInit {
           } else {
             console.log(userInfo.details);
             this.isLoading = false;
-            this.notify.errorNotification(
-              userInfo.details,
-              'Save Info failed'
-            );
+            this.notify.errorNotification(userInfo.details, 'Save Info failed');
           }
         },
       });
   }
 
   // Input Array
-  newContactType(contact: any): FormGroup {
-    return this.fb.group({
-      type: [contact.type],
-      value: [contact.value],
-    });
-  }
-  addInput() {
-
-    const contact = {
-      type: '',
-      value: '',
-    };
-console.log(this.saveUserInfoForm.value);
-    this.contactType.push(this.newContactType(contact));
+  newContactType() {
+    this.contactType.push(
+      this.fb.group({
+        type: [''],
+        value: [''],
+      })
+    );
   }
 
 
   processFile(imageInput: any) {
     const file: File = imageInput.files[0];
-    this.upload(file);
+    this.upload(file)
+    // .subscribe((res=>{console.log(res);}));
   }
 
   upload(file: any) {
@@ -269,5 +266,6 @@ console.log(this.saveUserInfoForm.value);
     formData.append('file', file);
     this.userImg = formData.get('file');
     console.log(this.userImg);
+    // return this.api.post('http://localhost/aphamea_project/web/users/images',this.userImg.name)
   }
 }

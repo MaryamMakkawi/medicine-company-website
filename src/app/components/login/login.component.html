@@ -3,11 +3,11 @@
   [ngClass]="toggleLoginActive ? 'left-panel-active' : 'right-panel-active'"
 >
   <!-- !!Form for signup -->
-  <div class="form-container sign-up-container">
+  <div class="form-container sign-up-container sign">
     <form
       *ngIf="!toggleCompleteInfoForm"
       [formGroup]="signupForm"
-      class="px-1 px-sm-2 px-md-3 px-lg-5"
+      class="px-1 px-sm-2 px-md-3 px-lg-5 "
       (ngSubmit)="onSignup(signupForm)"
     >
       <h3>Create New Account</h3>
@@ -248,26 +248,42 @@
       </div>
 
       <!-- Contact  -->
-      <div class="d-flex mt-3">
+      <div class=" mt-3">
         <!-- Contact Select Type-->
-        <div formArrayName="contactType" class="d-flex">
-          <label for="inputContact" class="form-label ms-2 me-2">Contact</label>
-          <select id="inputContact" class="form-select me-2 ms-2">
-            <option selected value="0">Email</option>
-            <option value="1">Phone</option>
-          </select>
-          <div *ngFor="let input of contactType.controls" class="d-flex flex-wrap">
-            <!-- Email Contact -->
-            <input type="email" class="form-control" placeholder="Email" />
-            <!-- Phone Contact -->
-            <input type="number" class="form-control" placeholder="Phone" />
-            <br>
-          </div>
-          <br />
+        <div formArrayName="contactType">
+          <ng-container
+            *ngFor="let contact of contactType?.controls; let i = index">
+            <div class="mb-3 d-flex" [formGroupName]="i">
+              <label for="inputContact" class="form-label ms-2 me-2"
+                >Contact</label>
+              <select
+                id="inputContact"
+                class="form-select me-2 ms-2 contact"
+                formControlName="type"
+              >
+                <option selected value="0">Email</option>
+                <option value="1">Phone</option>
+              </select>
+              <div>
+                <!-- Email Contact -->
+                <input
+                  type="email"
+                  class="form-control"
+                  placeholder="Email"
+                  formControlName="value"
+                />
+                <!-- Phone Contact -->
+                <input type="number" class="form-control" placeholder="Phone" formControlName="value" />
+              </div>
+
+              <button  type="button" class="add-input" (click)="newContactType()">
+                <i class="bi bi-plus"></i>
+              </button>
+            </div>
+
+          </ng-container>
         </div>
-        <button class="add-input" (click)="addInput()">
-          <i class="bi bi-plus"></i>
-        </button>
+
       </div>
 
       <button

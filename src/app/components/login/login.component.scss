@@ -73,7 +73,7 @@ form {
   justify-content: center;
   flex-direction: column;
   padding: 0 50px;
-  height: 100%;
+  min-height: 100%;
   text-align: center;
 }
 
@@ -343,4 +343,12 @@ form {
     color:#33348e ;
   }
 
+}
+.sign{
+  overflow: overlay;
+}
+select.contact{
+  padding: 5px;
+    height: 30%;
+    width: 30%;
 }
