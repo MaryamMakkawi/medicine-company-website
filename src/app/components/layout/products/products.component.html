@@ -1,4 +1,11 @@
 <div class="container">
+
+<!-- Search Section -->
+  <div class="container ms-4 mb-4">
+    <input type="text"  #search (keyup)="onSearch(search.value)"   placeholder="Search...">
+    <div class="search"></div>
+  </div>
+
   <!--! Products -->
   <div class="card" *ngFor="let medicine of medicines;let i=index">
     <div

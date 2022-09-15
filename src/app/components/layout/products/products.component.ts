@@ -9,18 +9,55 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./products.component.scss'],
 })
 export class ProductsComponent implements OnInit {
-  medicines!: Medicine[]|undefined;
+  medicines!: Medicine[] | undefined;
   constructor(private api: ApiService) {}
 
   ngOnInit(): void {
-    this.api.get(environment.base + '/medicine/get-all').subscribe({
-      next: (medicinesApi: any) => {
-        if (medicinesApi.status == 'ok') {
-          this.medicines = medicinesApi.medicines;
-          console.log(this.medicines);
-          console.log(medicinesApi);
-        }
-      },
-    });
+    this.api
+      .post(environment.base + '/medicine/get-all', {
+        searchFilters: {
+          filters: [
+            { name: 'productName', status: false },
+            { name: 'indications', status: false },
+            { name: 'composition', status: false },
+          ],
+          searchText: '',
+          platform: 0,
+        },
+      })
+      .subscribe({
+        next: (medicinesApi: any) => {
+          if (medicinesApi.status == 'ok') {
+            this.medicines = medicinesApi.medicines;
+            console.log(this.medicines);
+            console.log(medicinesApi);
+          }
+        },
+      });
+  }
+
+  onSearch(searchValue: any) {
+    console.log(searchValue);
+    this.api
+      .post(environment.base + '/medicine/get-all', {
+        searchFilters: {
+          filters: [
+            { name: 'productName', status: true },
+            { name: 'indications', status: false },
+            { name: 'composition', status: false },
+          ],
+          searchText: searchValue,
+          platform: 0,
+        },
+      })
+      .subscribe({
+        next: (medicinesApi: any) => {
+          if (medicinesApi.status == 'ok') {
+            this.medicines = medicinesApi.medicines;
+            console.log(this.medicines);
+            console.log(medicinesApi);
+          }
+        },
+      });
   }
 }
