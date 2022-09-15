@@ -33,9 +33,9 @@ export class HomeComponent implements OnInit {
   offerDetails: OfferDetails[] = [];
 
   // Activity
-  articleAll!: Activity[]|undefined;
+  articleAll!: Activity[] | undefined;
   articleContent: string = '';
-  articleImg: string[] |undefined = [];
+  articleImg: string[] | undefined = [];
   options: AnimationOptions = {
     path: '../../../../assets/images/medicine-pills.json',
   };
@@ -56,17 +56,26 @@ export class HomeComponent implements OnInit {
       });
     // All Article
     this.api
-      .get(
-        'http://localhost/aphamea_project/web/index.php/activity/get-all?type=1'
-      )
+      .post('http://localhost/aphamea_project/web/index.php/activity/get-all', {
+        type: 1,
+        searchFilters: {
+          filters: [
+            { name: 'title', status: false },
+            { name: 'content', status: false },
+          ],
+          searchText: '',
+          platform: 0,
+        },
+      })
       .subscribe({
         next: (res: any) => {
           if (res.status == 'ok') {
             this.articleAll = res.activities;
             console.log(res);
-          } else {
-            this.notify.errorNotification(res.details);
           }
+          // else {
+          //   this.notify.errorNotification(res.details);
+          // }
         },
       });
   }

@@ -233,6 +233,7 @@ export class LoginComponent implements OnInit {
       .subscribe({
         next: (userInfo: any) => {
           if (userInfo.status == 'ok') {
+            // TODO Image because without get error
             this.isLoading = false;
             this.auth.autoLogin(emailSign, passwordSign);
           } else {

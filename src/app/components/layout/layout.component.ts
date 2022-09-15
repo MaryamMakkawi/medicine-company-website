@@ -1,7 +1,9 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from 'src/app/interfaces/user.model';
+import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-layout',
@@ -21,7 +23,7 @@ export class LayoutComponent implements OnInit {
     'Agent',
     'Company manager',
   ];
-  constructor(private auth: AuthService, private fb: FormBuilder) {}
+  constructor(private auth: AuthService, private fb: FormBuilder,private api :ApiService) {}
   ngOnInit(): void {
     this.currentYear = new Date().getFullYear();
     this.user = JSON.parse(localStorage.getItem('userData') || '{}');
@@ -69,29 +71,35 @@ export class LayoutComponent implements OnInit {
   }
 
   onSave() {
-    this.auth
-      .saveUserInfo(
-        this.userInfoForm.value.userImage,
-        this.userInfoForm.value.regionId,
-        this.userInfoForm.value.cityId,
-        this.userInfoForm.value.countryId,
-        this.userInfoForm.value.region,
-        this.userInfoForm.value.city,
-        this.userInfoForm.value.country,
-        this.userInfoForm.value.role,
-        this.userInfoForm.value.specialMark,
-        this.userInfoForm.value.Contacts,
-        this.userInfoForm.value.email
-      )
-      .subscribe((updateUser: any) => {
-        console.log(updateUser);
-        if (updateUser.status == 'ok') {
-          this.auth.autoLogin(
-            this.userInfoForm.value.email,
-            this.userInfoForm.value.password
-          );
-        }
-      });
+   console.log(this.userInfoForm.value);
+  //TODO miss param
+     this.api.post(environment.base+'/site/update-user-info',this.userInfoForm.value).subscribe(res=>{
+      console.log(res);
+     });
+
+    // this.auth
+    //   .saveUserInfo(
+    //     this.userInfoForm.value.userImage,
+    //     this.userInfoForm.value.regionId,
+    //     this.userInfoForm.value.cityId,
+    //     this.userInfoForm.value.countryId,
+    //     this.userInfoForm.value.region,
+    //     this.userInfoForm.value.city,
+    //     this.userInfoForm.value.country,
+    //     this.userInfoForm.value.role,
+    //     this.userInfoForm.value.specialMark,
+    //     this.userInfoForm.value.Contacts,
+    //     this.userInfoForm.value.email
+    //   )
+    //   .subscribe((updateUser: any) => {
+    //     console.log(updateUser);
+    //     if (updateUser.status == 'ok') {
+    //       this.auth.autoLogin(
+    //         this.userInfoForm.value.email,
+    //         this.userInfoForm.value.password
+    //       );
+    //     }
+    //   });
   }
 
   onLogOut() {
