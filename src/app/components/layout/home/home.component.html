@@ -36,6 +36,64 @@
     <span class="typing"></span>
   </ngx-typed-js>
 </div>
+<!-- Ads Section  -->
+<!-- content -->
+<div
+  id="carouselExampleDark"
+  class="carousel carousel-dark slide"
+  data-bs-ride="carousel"
+>
+  <div class="carousel-indicators">
+    <button
+      type="button"
+      data-bs-target="#carouselExampleDark"
+      data-bs-slide-to="0"
+      class="active"
+      aria-current="true"
+      aria-label="Slide 1"
+    ></button>
+    <button
+      type="button"
+      data-bs-target="#carouselExampleDark"
+      data-bs-slide-to="1"
+      aria-label="Slide 2"
+    ></button>
+    <button
+      type="button"
+      data-bs-target="#carouselExampleDark"
+      data-bs-slide-to="2"
+      aria-label="Slide 3"
+    ></button>
+  </div>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <div class="carousel-caption d-none d-md-block">
+        <h5>First slide label</h5>
+        <p>Some representative placeholder content for the first slide.</p>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <div class="carousel-caption d-none d-md-block">
+        <h5>Second slide label</h5>
+        <p>Some representative placeholder content for the second slide.</p>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <div class="carousel-caption d-none d-md-block">
+        <h5>Third slide label</h5>
+        <p>Some representative placeholder content for the third slide.</p>
+      </div>
+    </div>
+  </div>
+  <!-- <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button> -->
+</div>
 
 <!-- offer cards section -->
 
@@ -83,16 +141,18 @@
               </div>
               <div class="color">
                 <h3 class="my-2">
-                 expireDate : {{ offerItem?.creationDate |date:'shortDate'}}
+                  expireDate : {{ offerItem?.creationDate | date: "shortDate" }}
                 </h3>
                 <!-- <span>1</span>
                 <span>2</span>
                 <span>3</span> -->
               </div>
               <div class="color">
-                <h3 class="my-2"> Status :</h3>
+                <h3 class="my-2">Status :</h3>
                 <span
-                  >{{ offerItem?.offerStatus === 0 ? "Available" : "unAvailable" }}
+                  >{{
+                    offerItem?.offerStatus === 0 ? "Available" : "unAvailable"
+                  }}
                 </span>
                 <!-- <span>2</span>
                 <span>3</span> -->
@@ -256,7 +316,7 @@
               >
                 <div>
                   <a
-                    class="artical-card  mb-3 articleImg"
+                    class="artical-card mb-3 articleImg"
                     [style.background-image]="'url(' + img + ')'"
                     (click)="onArticle(i)"
                     data-bs-toggle="modal"
@@ -267,7 +327,7 @@
               </ng-template>
             </swiper>
 
-           <p> {{ articleContent }}</p>
+            <p>{{ articleContent }}</p>
           </div>
           <div class="modal-footer">
             <button
