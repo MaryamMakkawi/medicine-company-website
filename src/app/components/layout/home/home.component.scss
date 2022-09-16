@@ -87,13 +87,28 @@
   border-radius: 20px !important;
 }
 
-.color span{
+.color span {
   width: initial !important;
-  height:  initial !important;
+  height: initial !important;
 }
 
-.articleImg{
+.articleImg {
   height: 387px;
   width: 298.33px;
+}
 
+.carousel {
+  min-height: 150px;
+  margin-top: 80px;
+  .carousel-inner {
+    overflow: visible;
+  }
+  .carousel-caption {
+    border-radius: 20px;
+    width: 35%;
+    max-height: fit-content;
+    margin: 0 auto;
+    background-color: #ad9eff8f;
+    bottom: -6.5em;
+  }
 }
