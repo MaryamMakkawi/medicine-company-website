@@ -83,16 +83,16 @@
               </div>
               <div class="color">
                 <h3 class="my-2">
-                 expireDate : {{ offerItem?.creationDate }} Years
+                 expireDate : {{ offerItem?.creationDate |date:'shortDate'}}
                 </h3>
                 <!-- <span>1</span>
                 <span>2</span>
                 <span>3</span> -->
               </div>
               <div class="color">
-                <h3 class="my-2">offer Status :</h3>
+                <h3 class="my-2"> Status :</h3>
                 <span
-                  >{{ offerItem?.offerStatus === 0 ? "Available" : "NonAvailable" }}
+                  >{{ offerItem?.offerStatus === 0 ? "Available" : "unAvailable" }}
                 </span>
                 <!-- <span>2</span>
                 <span>3</span> -->
@@ -102,7 +102,7 @@
                 data-bs-toggle="modal"
                 data-bs-target="#offerDetailsModal"
               >
-                <span (click)="displayOfferDetails(i)" class="pe-1"
+                <span (click)="displayOfferDetails(offerItem.id)" class="pe-1"
                   >Find out</span
                 >
               </button>

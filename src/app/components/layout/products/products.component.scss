@@ -126,12 +126,11 @@ span:hover {
 
 // Search Section
 
-.container {
+.container-search  {
   position: absolute;
   margin: auto 0;
-  top: 40px;
-  left: 0;
-  right: 0;
+  top: 80px;
+  right: 25px;
   width: 300px;
   height: 100px;
   .search {

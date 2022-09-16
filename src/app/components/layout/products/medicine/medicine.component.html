@@ -22,15 +22,20 @@
     <div class="product-info">
       <a href="#" class="free-shipping">medicine</a>
       <h3 class="product-name">{{ medicine?.productName }}</h3>
-      <p class="discount-price">Price: {{ medicine?.price }}$</p><br>
-      <p class="discount-price">netPrice: {{ medicine?.netPrice }}$</p><br>
-      <p class="discount-price">Packing: {{ medicine?.packing }}</p><br>
+      <p class="discount-price">Price: {{ medicine?.price }}$</p>
+      <br />
+      <p class="discount-price">netPrice: {{ medicine?.netPrice }}$</p>
+      <br />
+      <p class="discount-price">Packing: {{ medicine?.packing }}</p>
+      <br />
       <p class="offer-info">indications: {{ medicine?.indications }}</p>
       <p class="offer-info">composition: {{ medicine?.composition }}</p>
-      <p class="offer-info">
-        pharmaceuticalForm: {{ medicine?.pharmaceuticalForm?.name }}
+      <p class="offer-info" *ngFor="let pharm of medicine?.pharmaceuticalForms">
+        pharmaceuticalForm: {{ pharm.name }}
       </p>
-      <p class="offer-info">Category: {{ medicine?.category?.name }}</p>
+      <p class="offer-info" *ngFor="let cate of medicine?.categories">
+        Category:{{ cate.name }}
+      </p>
       <!-- <a href="#" class="add-to-cart">
         Add to cart
       </a> -->

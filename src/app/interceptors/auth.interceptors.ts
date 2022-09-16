@@ -1,27 +1,22 @@
-import {
-  HttpEvent,
-  HttpHandler,
-  HttpHeaders,
-  HttpInterceptor,
-  HttpRequest,
-} from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, exhaustMap, Observable, take, throwError } from 'rxjs';
-import { User } from '../interfaces/user.model';
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpHeaders } from '@angular/common/http';
+import { take, exhaustMap } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
+
 import { AuthService } from '../services/auth.service';
+import { throwError } from 'rxjs';
+import { User } from './../interfaces/user.model';
 @Injectable()
-export class AuthInterceptor implements HttpInterceptor {
-  constructor(private userAuth: AuthService) {}
-  intercept(
-    req: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
-    return this.userAuth.user$.pipe(
+export class AuthInterceptorService implements HttpInterceptor {
+  constructor(private authService: AuthService) {}
+
+  intercept(req: HttpRequest<any>, next: HttpHandler) {
+    return this.authService.user$.pipe(
       take(1),
       exhaustMap((user: User | null) => {
         if (!user) {
           return next.handle(req).pipe(
-            catchError((err) => {
+            catchError(err => {
               return throwError(() => err.error.message);
             })
           );
@@ -36,7 +31,7 @@ export class AuthInterceptor implements HttpInterceptor {
           },
         });
         return next.handle(modifiedReq).pipe(
-          catchError((err) => {
+          catchError(err => {
             return throwError(() => err.error.message);
           })
         );

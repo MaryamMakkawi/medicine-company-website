@@ -13,6 +13,8 @@ import { NotifierService } from '../../services/notifier.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { MustMatch } from '../../helpers/must-match.validator';
 import { ApiService } from 'src/app/services/api.service';
+import { HttpHeaders } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -214,26 +216,25 @@ export class LoginComponent implements OnInit {
   }
   // Save User Info
   onSaveInfo(emailSign: string, passwordSign: string) {
+
+    const formData: any = new FormData();
+    formData.append('role', 5);
+    formData.append('userImage', this.file);
+    formData.append('infoUser', this.saveUserInfoForm.value);
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'multipart/form-data',
+      }),
+    };
+
     console.log(this.saveUserInfoForm);
     this.isLoading = true;
-    this.auth
-      .saveUserInfo(
-        this.userImg.name,
-        this.saveUserInfoForm.value.regionId,
-        this.saveUserInfoForm.value.cityId,
-        this.saveUserInfoForm.value.countryId,
-        this.saveUserInfoForm.value.region,
-        this.saveUserInfoForm.value.city,
-        this.saveUserInfoForm.value.country,
-        this.saveUserInfoForm.value.role,
-        this.saveUserInfoForm.value.specialMark,
-        this.saveUserInfoForm.value.contactType,
-        emailSign
-      )
+    this.api.post(environment.base+'/site/save-user-info',formData,httpOptions)
       .subscribe({
         next: (userInfo: any) => {
           if (userInfo.status == 'ok') {
-            // TODO Image because without get error
+            // TODO miss param
             this.isLoading = false;
             this.auth.autoLogin(emailSign, passwordSign);
           } else {
@@ -243,6 +244,21 @@ export class LoginComponent implements OnInit {
           }
         },
       });
+
+
+      // this.auth
+      // .saveUserInfo(
+      //   this.saveUserInfoForm.value.regionId,
+      //   this.saveUserInfoForm.value.cityId,
+      //   this.saveUserInfoForm.value.countryId,
+      //   this.saveUserInfoForm.value.region,
+      //   this.saveUserInfoForm.value.city,
+      //   this.saveUserInfoForm.value.country,
+      //   this.saveUserInfoForm.value.role,
+      //   this.saveUserInfoForm.value.specialMark,
+      //   this.saveUserInfoForm.value.contactType,
+      //   emailSign,httpOptions
+      // )
   }
 
   // Input Array
@@ -256,17 +272,19 @@ export class LoginComponent implements OnInit {
   }
 
 
-  processFile(imageInput: any) {
-    const file: File = imageInput.files[0];
-    this.upload(file)
-    // .subscribe((res=>{console.log(res);}));
+  processFile(event: any) {
+    console.log(event);
+    if (event.target.files && event.target.files.length > 0) {
+      const file = event.target.files[0] as File;
+      this.upload(file);
+    }
   }
-
-  upload(file: any) {
-    const formData = new FormData();
-    formData.append('file', file);
-    this.userImg = formData.get('file');
-    console.log(this.userImg);
-    // return this.api.post('http://localhost/aphamea_project/web/users/images',this.userImg.name)
+  file!: File;
+  upload(fileTest: File) {
+    // this.saveUserInfoForm.patchValue({
+    //   img: file,
+    // });
+    // this.saveUserInfoForm.get('img')?.updateValueAndValidity();
+    this.file = fileTest;
   }
 }

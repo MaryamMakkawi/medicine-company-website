@@ -112,7 +112,7 @@
                 id="file-input"
                 formControlName="userImage"
                 class="file-input__input"
-              />
+                (change)="processFile($event)" />
               <label class="file-input__label" for="file-input">
                 <div class="user-img">
                   <img
@@ -277,7 +277,7 @@
           >
             Close
           </button>
-          <button type="button" class="btn btn-primary" (click)="onSave()">
+          <button type="button" class="btn btn-primary" (click)="onUpdateUser()">
             Save changes
           </button>
         </div>

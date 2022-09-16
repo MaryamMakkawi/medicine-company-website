@@ -9,7 +9,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { ToastrModule } from 'ngx-toastr';
-import { AuthInterceptor } from './interceptors/auth.interceptors';
+import { AuthInterceptorService } from './interceptors/auth.interceptors';
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,7 +24,7 @@ import { AuthInterceptor } from './interceptors/auth.interceptors';
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
+      useClass: AuthInterceptorService,
       multi: true,
     },
   ],

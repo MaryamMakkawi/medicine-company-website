@@ -1,17 +1,20 @@
+
+  <!-- Search Section -->
+<div class=" container-search ms-4 mb-4">
+  <input type="text"  #search (keyup)="onSearch(search.value)"   placeholder="Search...">
+  <div class="search"></div>
+</div>
+
+
 <div class="container">
 
-<!-- Search Section -->
-  <div class="container ms-4 mb-4">
-    <input type="text"  #search (keyup)="onSearch(search.value)"   placeholder="Search...">
-    <div class="search"></div>
-  </div>
 
   <!--! Products -->
   <div class="card" *ngFor="let medicine of medicines;let i=index">
     <div
       class="box-1"
       [style.background-image]="'url(' + medicine.imgs+ ')' "
-      [routerLink]="['/layout/products',i+1]"
+      [routerLink]="['/layout/products',medicine.id]"
     >
       <svg width="48" height="48" xmlns="http://www.w3.org/2000/svg">
         <g fill="none" fill-rule="evenodd">
@@ -47,13 +50,14 @@
             <path
               d="M8.305 2.007a6.667 6.667 0 1 0 0 13.334 6.667 6.667 0 0 0 0-13.334Zm2.667 7.334H8.305a.667.667 0 0 1-.667-.667V6.007a.667.667 0 0 1 1.334 0v2h2a.667.667 0 0 1 0 1.334Z"
               fill="#8BACD9"/></svg>
-              Date:{{ medicine?.expiredDate }}
+              Date:{{ medicine?.expiredDate }} years
         </button>
       </div>
       <hr />
       <div class="card-foot">
         <p>
-          Category Form: <span>{{ medicine?.category?.name}}</span>
+          Category Form: <span *ngFor="let cate of medicine.categories">{{ cate.name}}</span>
+          PharmaceuticalForm:<span *ngFor="let pharm of medicine.pharmaceuticalForms">{{pharm.name}}</span>
         </p>
       </div>
     </div>

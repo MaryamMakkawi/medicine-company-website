@@ -84,7 +84,7 @@ export class HomeComponent implements OnInit {
     // One Offer
     this.api
       .get(
-        `http://localhost/aphamea_project/web/index.php/offer/get?id=${id + 1}`
+        `http://localhost/aphamea_project/web/index.php/offer/get?id=${id}`
       )
       .subscribe({
         next: (res: any) => {

@@ -43,33 +43,32 @@ export class AuthService {
       id,
     });
   }
-  saveUserInfo(
-    img: string,
-    regionId: number,
-    cityId: number,
-    countryId: number,
-    region: string,
-    city: string,
-    country: string,
-    role: number,
-    specialMark: string,
-    Contacts: string[],
-    email: string
-  ) {
-    return this.api.post(environment.base + '/site/save-user-info', {
-      img,
-      regionId,
-      cityId,
-      countryId,
-      region,
-      city,
-      country,
-      role,
-      specialMark,
-      Contacts,
-      email,
-    });
-  }
+  // saveUserInfo(
+  //   regionId: number,
+  //   cityId: number,
+  //   countryId: number,
+  //   region: string,
+  //   city: string,
+  //   country: string,
+  //   role: number,
+  //   specialMark: string,
+  //   Contacts: string[],
+  //   email: string,
+  //   headerOption:any
+  // ) {
+  //   return this.api.post(environment.base + '/site/save-user-info', {
+  //     regionId,
+  //     cityId,
+  //     countryId,
+  //     region,
+  //     city,
+  //     country,
+  //     role,
+  //     specialMark,
+  //     Contacts,
+  //     email,
+  //   },headerOption);
+  // }
 
   public handleAuth(
     accessToken: string,

@@ -1,3 +1,4 @@
+import { HttpHeaders } from '@angular/common/http';
 import { Component, HostListener, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from 'src/app/interfaces/user.model';
@@ -23,8 +24,16 @@ export class LayoutComponent implements OnInit {
     'Agent',
     'Company manager',
   ];
-  constructor(private auth: AuthService, private fb: FormBuilder,private api :ApiService) {}
+
+  userDetails?: any;
+
+  constructor(
+    private auth: AuthService,
+    private fb: FormBuilder,
+    private api: ApiService
+  ) {}
   ngOnInit(): void {
+    this.userDetails = this.auth.user$.getValue();
     this.currentYear = new Date().getFullYear();
     this.user = JSON.parse(localStorage.getItem('userData') || '{}');
     // !Form user
@@ -70,36 +79,64 @@ export class LayoutComponent implements OnInit {
     return this.userInfoForm.controls;
   }
 
-  onSave() {
-   console.log(this.userInfoForm.value);
-  //TODO miss param
-     this.api.post(environment.base+'/site/update-user-info',this.userInfoForm.value).subscribe(res=>{
-      console.log(res);
-     });
+  onUpdateUser() {
+    const formData: any = new FormData();
+    formData.append('id', this.user.id);
+    formData.append('role', this.userInfoForm.value.role);
+    formData.append('userImage', this.file);
+    formData.append('updateUser', this.userInfoForm.value);
 
-    // this.auth
-    //   .saveUserInfo(
-    //     this.userInfoForm.value.userImage,
-    //     this.userInfoForm.value.regionId,
-    //     this.userInfoForm.value.cityId,
-    //     this.userInfoForm.value.countryId,
-    //     this.userInfoForm.value.region,
-    //     this.userInfoForm.value.city,
-    //     this.userInfoForm.value.country,
-    //     this.userInfoForm.value.role,
-    //     this.userInfoForm.value.specialMark,
-    //     this.userInfoForm.value.Contacts,
-    //     this.userInfoForm.value.email
-    //   )
-    //   .subscribe((updateUser: any) => {
-    //     console.log(updateUser);
-    //     if (updateUser.status == 'ok') {
-    //       this.auth.autoLogin(
-    //         this.userInfoForm.value.email,
-    //         this.userInfoForm.value.password
-    //       );
-    //     }
-    //   });
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'multipart/form-data',
+      }),
+    };
+    //TODO update user
+    this.api
+      .post(environment.base + '/site/update-user-info', formData, {
+        httpOptions,
+      })
+      .subscribe((res:any) => {
+          if (res.status=='ok') {
+            this.auth.handleAuth(
+              this.userDetails.getToken(),
+              this.userInfoForm.value.email,
+              this.userInfoForm.value.password,
+              this.userInfoForm.value.firstName,
+              this.userInfoForm.value.lastName,
+              this.user.id,
+              this.userInfoForm.value.userImage,
+              this.userInfoForm.value.regionId,
+              this.userInfoForm.value.cityId,
+              this.userInfoForm.value.countryId,
+              this.userInfoForm.value.region,
+              this.userInfoForm.value.city,
+              this.userInfoForm.value.country,
+              this.userInfoForm.value.role,
+              this.userInfoForm.value.specialMark,
+              this.userInfoForm.value.contacts
+            );
+            console.log(this.user);
+            console.log(this.userDetails);
+          }
+      });
+
+  }
+
+  processFile(event: any) {
+    console.log(event);
+    if (event.target.files && event.target.files.length > 0) {
+      const file = event.target.files[0] as File;
+      this.upload(file);
+    }
+  }
+  file!: File;
+  upload(fileTest: File) {
+    // this.saveUserInfoForm.patchValue({
+    //   img: file,
+    // });
+    // this.saveUserInfoForm.get('img')?.updateValueAndValidity();
+    this.file = fileTest;
   }
 
   onLogOut() {
