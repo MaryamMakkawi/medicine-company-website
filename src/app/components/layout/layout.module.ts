@@ -7,6 +7,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [LayoutComponent],
-  imports: [CommonModule, LayoutRoutingModule,ReactiveFormsModule],
+  imports: [CommonModule, LayoutRoutingModule, ReactiveFormsModule],
+  providers: [],
 })
 export class LayoutModule {}

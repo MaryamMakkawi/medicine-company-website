@@ -51,7 +51,6 @@ export class HomeComponent implements OnInit {
       .subscribe({
         next: (res: any) => {
           this.offerAll = res.offers;
-          console.log(res.offers);
         },
       });
     // All Article

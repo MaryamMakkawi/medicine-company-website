@@ -36,6 +36,7 @@ export class LayoutComponent implements OnInit {
     this.userDetails = this.auth.user$.getValue();
     this.currentYear = new Date().getFullYear();
     this.user = JSON.parse(localStorage.getItem('userData') || '{}');
+    this.auth.autoLogin();
     // !Form user
     this.userInfoForm = this.fb.group({
       userImage: [null],
@@ -96,31 +97,30 @@ export class LayoutComponent implements OnInit {
       .post(environment.base + '/site/update-user-info', formData, {
         httpOptions,
       })
-      .subscribe((res:any) => {
-          if (res.status=='ok') {
-            this.auth.handleAuth(
-              this.userDetails.getToken(),
-              this.userInfoForm.value.email,
-              this.userInfoForm.value.password,
-              this.userInfoForm.value.firstName,
-              this.userInfoForm.value.lastName,
-              this.user.id,
-              this.userInfoForm.value.userImage,
-              this.userInfoForm.value.regionId,
-              this.userInfoForm.value.cityId,
-              this.userInfoForm.value.countryId,
-              this.userInfoForm.value.region,
-              this.userInfoForm.value.city,
-              this.userInfoForm.value.country,
-              this.userInfoForm.value.role,
-              this.userInfoForm.value.specialMark,
-              this.userInfoForm.value.contacts
-            );
-            console.log(this.user);
-            console.log(this.userDetails);
-          }
+      .subscribe((res: any) => {
+        if (res.status == 'ok') {
+          this.auth.handleAuth(
+            this.userDetails.getToken(),
+            this.userInfoForm.value.email,
+            this.userInfoForm.value.password,
+            this.userInfoForm.value.firstName,
+            this.userInfoForm.value.lastName,
+            this.user.id,
+            this.userInfoForm.value.userImage,
+            this.userInfoForm.value.regionId,
+            this.userInfoForm.value.cityId,
+            this.userInfoForm.value.countryId,
+            this.userInfoForm.value.region,
+            this.userInfoForm.value.city,
+            this.userInfoForm.value.country,
+            this.userInfoForm.value.role,
+            this.userInfoForm.value.specialMark,
+            this.userInfoForm.value.contacts
+          );
+          console.log(this.user);
+          console.log(this.userDetails);
+        }
       });
-
   }
 
   processFile(event: any) {
