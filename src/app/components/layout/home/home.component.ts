@@ -1,4 +1,9 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  HostListener,
+  OnInit,
+  ViewEncapsulation,
+} from '@angular/core';
 
 import SwiperCore, {
   Autoplay,
@@ -27,6 +32,11 @@ export class HomeComponent implements OnInit {
   currentDay?: number;
   currentYear?: number;
 
+  displayAd!: number;
+  timer: any;
+  // Ads
+  adsAll: any[] = [];
+
   // Offer
   offer: Offer | undefined;
   offerAll: Offer[] | undefined;
@@ -45,6 +55,29 @@ export class HomeComponent implements OnInit {
     this.currentDate = new Date().getDate();
     this.currentDay = new Date().getDay();
     this.currentYear = new Date().getFullYear();
+
+    // All Ads
+    this.displayAd = 0;
+    this.api
+      .post('http://localhost/aphamea_project/web/index.php/activity/get-all', {
+        type: 0,
+        searchFilters: {
+          filters: [
+            { name: 'title', status: false },
+            { name: 'content', status: false },
+          ],
+          searchText: '',
+          platform: 0,
+        },
+      })
+      .subscribe({
+        next: (res: any) => {
+          if (res.status == 'ok') {
+            this.adsAll = res.activities;
+          }
+        },
+      });
+
     // All Offer
     this.api
       .get('http://localhost/aphamea_project/web/index.php/offer/get-all')
@@ -53,6 +86,7 @@ export class HomeComponent implements OnInit {
           this.offerAll = res.offers;
         },
       });
+
     // All Article
     this.api
       .post('http://localhost/aphamea_project/web/index.php/activity/get-all', {
@@ -70,11 +104,7 @@ export class HomeComponent implements OnInit {
         next: (res: any) => {
           if (res.status == 'ok') {
             this.articleAll = res.activities;
-            console.log(res);
           }
-          // else {
-          //   this.notify.errorNotification(res.details);
-          // }
         },
       });
   }
@@ -82,13 +112,10 @@ export class HomeComponent implements OnInit {
   displayOfferDetails(id: number) {
     // One Offer
     this.api
-      .get(
-        `http://localhost/aphamea_project/web/index.php/offer/get?id=${id}`
-      )
+      .get(`http://localhost/aphamea_project/web/index.php/offer/get?id=${id}`)
       .subscribe({
         next: (res: any) => {
           if (res.status == 'ok') {
-            console.log(res);
             this.offer = res.offer;
             this.offerDetails = res.offerDetails;
           }
@@ -109,7 +136,6 @@ export class HomeComponent implements OnInit {
           if (res.status == 'ok') {
             this.articleContent = res.activity.content;
             this.articleImg = res.activity.imgs;
-            console.log(res);
           }
         },
       });
