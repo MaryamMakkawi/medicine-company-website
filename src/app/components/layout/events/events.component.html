@@ -1,1 +1,22 @@
-<p>events works!</p>
+<div class="container">
+  <div class="product-card" *ngFor="let event of eventAll; let i = index">
+    <div class="image-container">
+      <div class="cover-image product-image">
+        <img
+          [src]="
+            event.imgs!=0
+              ? event.imgs[0]
+              : '../../../../assets/images/vitamin.jpg'
+          "
+        />
+      </div>
+    </div>
+
+    <div class="product-info">
+      <h1 class="product-name">Event {{ event.title }}</h1>
+      <p class="discount-price">
+        {{ event.content }}
+      </p>
+    </div>
+  </div>
+</div>
