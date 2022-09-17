@@ -6,10 +6,10 @@
       </div>
       <div
         class="more-image-container"
-        *ngFor="let img of medicine?.imgs; let i = index"
+
       >
-        <div class="more-image product-image">
-          <img [src]="img[i]" alt="" />
+        <div class="more-image product-image "*ngFor="let img of medicine?.imgs; let i = index">
+          <img [src]="img" alt="" />
         </div>
         <div class="more-image product-image">
           <img [src]="imgFirst" alt="" />
@@ -20,7 +20,6 @@
       </div>
     </div>
     <div class="product-info">
-      <a href="#" class="free-shipping">medicine</a>
       <h3 class="product-name">{{ medicine?.productName }}</h3>
       <p class="discount-price">Price: {{ medicine?.price }}$</p>
       <br />

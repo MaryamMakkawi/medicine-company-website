@@ -14,14 +14,16 @@
 
 .cover-image {
   width: 300px;
-  height: 300px;
+  height: 200px;
   overflow: hidden;
 }
 img:hover{
   transform: scale(1.05);
 }
 .more-image-container {
-  display: flex;
+  margin-top: 35px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
 }
 .more-image {
   width: 100px;

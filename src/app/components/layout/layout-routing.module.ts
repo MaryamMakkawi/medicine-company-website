@@ -35,6 +35,7 @@ const routes: Routes = [
           import('./products/medicine/medicine.module').then((m) => m.MedicineModule),
       },
       { path: 'contacts', loadChildren: () => import('./contacts/contacts.module').then(m => m.ContactsModule) },
+      { path: 'events', loadChildren: () => import('./events/events.module').then(m => m.EventsModule) },
     ],
   },
 

@@ -26,7 +26,6 @@ export class MedicineComponent implements OnInit {
         if (res.status == 'ok') {
           this.medicine = res.medicine;
           this.imgFirst = res.medicine.imgs[0];
-          console.log(this.imgFirst );
           console.log(res);
         }
       },
