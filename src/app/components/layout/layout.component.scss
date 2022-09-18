@@ -10,6 +10,7 @@
 }
 .user-img {
   position: relative;
+  z-index: 999;
   cursor: pointer;
   img {
     width: 50px;

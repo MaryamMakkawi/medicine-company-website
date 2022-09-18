@@ -1,20 +1,37 @@
-
-  <!-- Search Section -->
-<div class=" container-search ms-4 mb-4">
-  <input type="text"  #search (keyup)="onSearch(search.value)"   placeholder="Search...">
+<!-- Search Section -->
+<div class="container-search ms-4 mb-4">
+  <input
+    type="text"
+    #search
+    (keyup)="onSearch(search.value)"
+    placeholder="Search..."
+  />
   <div class="search"></div>
 </div>
 
+<div class="container select">
+  <select class="form-select mb-3" aria-label="Category Select" #cate (change)="cateAllMedicine(cate.value)">
+    <option selected>Choose Category</option>
+    <option *ngFor="let category of categories" [value]="category.id">
+      {{ category.name }}
+    </option>
+  </select>
+
+  <select class="form-select" aria-label="Pharmaceutical Form Select" #pharme (change)="pharmeAllMedicine(pharme.value)">
+    <option selected>Choose Pharmaceutical Form</option>
+    <option *ngFor="let pharm of pharmaceuticalForms" [value]="pharm.id">
+      {{ pharm.name }}
+    </option>
+  </select>
+</div>
 
 <div class="container">
-
-
   <!--! Products -->
-  <div class="card" *ngFor="let medicine of medicines;let i=index">
+  <div class="card" *ngFor="let medicine of medicines; let i = index">
     <div
       class="box-1"
-      [style.background-image]="'url(' + medicine.imgs+ ')' "
-      [routerLink]="['/layout/products',medicine.id]"
+      [style.background-image]="'url(' + medicine.imgs + ')'"
+      [routerLink]="['/layout/products', medicine.id]"
     >
       <svg width="48" height="48" xmlns="http://www.w3.org/2000/svg">
         <g fill="none" fill-rule="evenodd">
@@ -29,35 +46,43 @@
       <div class="green"></div>
     </div>
     <div class="box-2">
-      <h3> {{ medicine?.productName }}</h3>
+      <h3>{{ medicine?.productName }}</h3>
       <div class="shop">
         <button>
           <svg width="11" height="18" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M11 10.216 5.5 18 0 10.216l5.5 3.263 5.5-3.262ZM5.5 0l5.496 9.169L5.5 12.43 0 9.17 5.5 0Z"
               fill="#00FFF8"
-            /></svg>netPrice:{{ medicine?.netPrice }}
+            /></svg
+          >netPrice:{{ medicine?.netPrice }}
         </button>
         <button class="second">
           <svg width="11" height="18" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M11 10.216 5.5 18 0 10.216l5.5 3.263 5.5-3.262ZM5.5 0l5.496 9.169L5.5 12.43 0 9.17 5.5 0Z"
               fill="#00FFF8"
-            /></svg>Price:{{ medicine?.price }}
+            /></svg
+          >Price:{{ medicine?.price }}
         </button>
         <button>
           <svg width="17" height="17" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M8.305 2.007a6.667 6.667 0 1 0 0 13.334 6.667 6.667 0 0 0 0-13.334Zm2.667 7.334H8.305a.667.667 0 0 1-.667-.667V6.007a.667.667 0 0 1 1.334 0v2h2a.667.667 0 0 1 0 1.334Z"
-              fill="#8BACD9"/></svg>
-              Date:{{ medicine?.expiredDate }} years
+              fill="#8BACD9"
+            />
+          </svg>
+          Date:{{ medicine?.expiredDate }} years
         </button>
       </div>
       <hr />
       <div class="card-foot">
         <p>
-          Category Form: <span *ngFor="let cate of medicine.categories">{{ cate.name}}</span>
-          PharmaceuticalForm:<span *ngFor="let pharm of medicine.pharmaceuticalForms">{{pharm.name}}</span>
+          Category Form:
+          <span *ngFor="let catey of medicine.categories">{{ catey.name }}</span>
+          PharmaceuticalForm:<span
+            *ngFor="let pharmey of medicine.pharmaceuticalForms"
+            >{{ pharmey.name }}</span
+          >
         </p>
       </div>
     </div>

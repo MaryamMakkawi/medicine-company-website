@@ -186,7 +186,7 @@
               <h1>{{ article?.type == 1 ? "Article" : "ads" }}</h1>
               <p>Click for Watch Content the Article.</p>
               <div class="date">
-                {{ article?.publishedDate }}
+                {{ article?.publishedDate |date:'shortDate' }}
               </div>
             </div>
           </a>

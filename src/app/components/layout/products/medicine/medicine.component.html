@@ -20,38 +20,40 @@
       </div>
     </div>
     <div class="product-info">
-      <h3 class="product-name">{{ medicine?.productName }}</h3>
+      <h6 class="product-name">{{ medicine?.productName }}</h6>
       <p class="discount-price">Price: {{ medicine?.price }}$</p>
       <br />
       <p class="discount-price">netPrice: {{ medicine?.netPrice }}$</p>
       <br />
       <p class="discount-price">Packing: {{ medicine?.packing }}</p>
       <br />
-      <p class="offer-info">indications: {{ medicine?.indications }}</p>
-      <p class="offer-info">composition: {{ medicine?.composition }}</p>
-      <p class="offer-info" *ngFor="let pharm of medicine?.pharmaceuticalForms">
-        pharmaceuticalForm: {{ pharm.name }}
-      </p>
-      <p class="offer-info" *ngFor="let cate of medicine?.categories">
-        Category:{{ cate.name }}
-      </p>
-      <!-- <a href="#" class="add-to-cart">
-        Add to cart
-      </a> -->
+       <div>
+        indications:
+        <p class="offer-info">{{ medicine?.indications }}</p>
+       </div>
+       <div>
+        composition:
+        <p class="offer-info">{{ medicine?.composition }}</p>
+       </div>
+       <div>
+        indications:  pharmaceuticalForm:
+        <p class="offer-info" *ngFor="let pharm of medicine?.pharmaceuticalForms">
+          {{ pharm.name }}
+        </p>
+       </div>
+       <div>
+        Category:
+        <p class="offer-info" *ngFor="let cate of medicine?.categories">
+          {{ cate.name }}
+        </p>
+       </div>
       <div class="stock">
         <div class="stock-status"></div>
         <p class="stock-info">
-          expired Date: {{ medicine?.expiredDate | date: "longDate" }}
+          expired Date: {{ medicine?.expiredDate }}Years
         </p>
       </div>
-      <!-- <div class="buttons">
-        <a href="#" class="button">
-         Add to cart
-        </a>
-        <a href="#" class="button">
-           Add to wishlist
-        </a>
-      </div> -->
+
     </div>
   </div>
 </div>
