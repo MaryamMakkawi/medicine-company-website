@@ -100,7 +100,7 @@ export class LayoutComponent implements OnInit {
       .subscribe((res: any) => {
         if (res.status == 'ok') {
           this.auth.handleAuth(
-            this.userDetails.getToken(),
+            this.userDetails?.getToken(),
             this.userInfoForm.value.email,
             this.userInfoForm.value.password,
             this.userInfoForm.value.firstName,

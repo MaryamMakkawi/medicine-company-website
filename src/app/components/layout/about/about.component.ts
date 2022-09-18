@@ -32,3 +32,45 @@ export class AboutComponent implements OnInit {
     path: '../../../../assets/lottieFiles/about-us.json',
   };
 }
+
+
+// {
+//   "id": 1,
+//   "name": "Muhammad Co.",
+//   "description": "Hi this company belongs to muhammad nawlo",
+//   "img": null,
+//   "logo": null,
+//   "numOfEmployee": 50,
+//   "companyTeams": [
+//       {
+//           "id": 1,
+//           "companyId": 1,
+//           "userId": 1,
+//           "position": "manager",
+//           "description": "this is a good manager"
+//       },
+//       {
+//           "id": 2,
+//           "companyId": 1,
+//           "userId": 1,
+//           "position": "employee",
+//           "description": "this is a bad employee"
+//       }
+//   ],
+//   "contacts": [
+//       {
+//           "id": 1,
+//           "companyId": 1,
+//           "userId": null,
+//           "type": 1,
+//           "content": "+96355548214"
+//       },
+//       {
+//           "id": 2,
+//           "companyId": 1,
+//           "userId": null,
+//           "type": 1,
+//           "content": "nawlo@gmail.com"
+//       }
+//   ]
+// }

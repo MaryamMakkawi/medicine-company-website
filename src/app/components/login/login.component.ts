@@ -244,21 +244,6 @@ export class LoginComponent implements OnInit {
           }
         },
       });
-
-
-      // this.auth
-      // .saveUserInfo(
-      //   this.saveUserInfoForm.value.regionId,
-      //   this.saveUserInfoForm.value.cityId,
-      //   this.saveUserInfoForm.value.countryId,
-      //   this.saveUserInfoForm.value.region,
-      //   this.saveUserInfoForm.value.city,
-      //   this.saveUserInfoForm.value.country,
-      //   this.saveUserInfoForm.value.role,
-      //   this.saveUserInfoForm.value.specialMark,
-      //   this.saveUserInfoForm.value.contactType,
-      //   emailSign,httpOptions
-      // )
   }
 
   // Input Array
@@ -281,10 +266,6 @@ export class LoginComponent implements OnInit {
   }
   file!: File;
   upload(fileTest: File) {
-    // this.saveUserInfoForm.patchValue({
-    //   img: file,
-    // });
-    // this.saveUserInfoForm.get('img')?.updateValueAndValidity();
     this.file = fileTest;
   }
 }
