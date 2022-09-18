@@ -34,8 +34,9 @@ export class LayoutComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     this.userDetails = this.auth.user$.getValue();
-    this.currentYear = new Date().getFullYear();
     this.user = JSON.parse(localStorage.getItem('userData') || '{}');
+
+    this.currentYear = new Date().getFullYear();
     this.auth.autoLogin();
     // !Form user
     this.userInfoForm = this.fb.group({
@@ -83,48 +84,37 @@ export class LayoutComponent implements OnInit {
   onUpdateUser() {
     const formData: any = new FormData();
     formData.append('id', this.user.id);
-    formData.append('role', this.userInfoForm.value.role);
     formData.append('userImage', this.file);
-    formData.append('updateUser', this.userInfoForm.value);
-
+    formData.append('email', this.userInfoForm.value.email);
+    formData.append('firstName', this.userInfoForm.value.firstName);
+    formData.append('lastName', this.userInfoForm.value.lastName);
+    formData.append('region', this.userInfoForm.value.region);
+    formData.append('city', this.userInfoForm.value.city);
+    formData.append('country', this.userInfoForm.value.country);
+    formData.append('role', this.userInfoForm.value.role);
+    formData.append('specialMark', this.userInfoForm.value.specialMark);
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'multipart/form-data',
       }),
     };
-    //TODO update user
     this.api
       .post(environment.base + '/site/update-user-info', formData, {
         httpOptions,
       })
       .subscribe((res: any) => {
         if (res.status == 'ok') {
-          this.auth.handleAuth(
-            this.userDetails?.getToken(),
-            this.userInfoForm.value.email,
-            this.userInfoForm.value.password,
-            this.userInfoForm.value.firstName,
-            this.userInfoForm.value.lastName,
-            this.user.id,
-            this.userInfoForm.value.userImage,
-            this.userInfoForm.value.regionId,
-            this.userInfoForm.value.cityId,
-            this.userInfoForm.value.countryId,
-            this.userInfoForm.value.region,
-            this.userInfoForm.value.city,
-            this.userInfoForm.value.country,
-            this.userInfoForm.value.role,
-            this.userInfoForm.value.specialMark,
-            this.userInfoForm.value.contacts
-          );
-          console.log(this.user);
-          console.log(this.userDetails);
+          this.auth.user$.next(res.user);
+          localStorage.setItem('userData', JSON.stringify(res.user));
+          this.userDetails = this.auth.user$.getValue();
+          this.user.userImage=this.userDetails.img
+        } else {
+          console.log(res);
         }
       });
   }
 
   processFile(event: any) {
-    console.log(event);
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0] as File;
       this.upload(file);
@@ -132,10 +122,6 @@ export class LayoutComponent implements OnInit {
   }
   file!: File;
   upload(fileTest: File) {
-    // this.saveUserInfoForm.patchValue({
-    //   img: file,
-    // });
-    // this.saveUserInfoForm.get('img')?.updateValueAndValidity();
     this.file = fileTest;
   }
 

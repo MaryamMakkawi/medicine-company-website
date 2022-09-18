@@ -181,8 +181,7 @@
           id="file-input"
           formControlName="img"
           class="file-input__input"
-          #img
-          (change)="processFile(img)"
+          (change)="processFile($event)"
         />
         <label class="file-input__label" for="file-input">
           <div class="user-img">

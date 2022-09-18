@@ -50,7 +50,9 @@
         >
           <img
             class="user-img"
-            src="{{ user.userImage || '../../../assets/images/avatar-default.jpg' }}"
+            src="{{
+              user.userImage || '../../../assets/images/avatar-default.jpg'
+            }}"
           />
         </div>
         <ul class="dropdown-menu profile-dropdown p-2">
@@ -120,15 +122,19 @@
                 id="file-input"
                 formControlName="userImage"
                 class="file-input__input"
-                (change)="processFile($event)" />
+                (change)="processFile($event)"
+              />
               <label class="file-input__label" for="file-input">
                 <div class="user-img">
                   <img
-                    [src]="user.userImage !== null ? user.userImage : './../../../../assets/img/avatars/avatar-default.jpg'"
+                    src="{{
+                      user.userImage ||
+                        '../../../assets/images/avatar-default.jpg'
+                    }}"
                   />
                   <i class="bi bi-plus"></i>
                 </div>
-                </label>
+              </label>
             </div>
             <!-- FirstName -->
             <div class="w-100 mb-3">
@@ -234,11 +240,7 @@
 
               <!-- City -->
               <label for="inputCity" class="form-label ms-2 me-2">City</label>
-              <select
-                id="inputCity"
-                class="form-select"
-                formControlName="city"
-              >
+              <select id="inputCity" class="form-select" formControlName="city">
                 <option selected>Choose...</option>
                 <option>m</option>
                 <option>m</option>
@@ -285,8 +287,12 @@
           >
             Close
           </button>
-          <button type="button" class="btn btn-primary" (click)="onUpdateUser()">
-            Save changes
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="onUpdateUser()"
+          >
+            Update User
           </button>
         </div>
       </div>
@@ -315,7 +321,9 @@
       <div class="user-profile">
         <div class="user-img">
           <img
-          [src]="user.userImage !== null ? user.userImage : './../../../../assets/img/avatars/avatar-default.jpg'"
+            src="{{
+              user.userImage || '../../../assets/images/avatar-default.jpg'
+            }}"
           />
         </div>
         <div>
@@ -336,7 +344,7 @@
         <li><a class="link" routerLink="about">about</a></li>
         <li><a class="link" routerLink="contacts">contacts</a></li>
         <li><a class="link" routerLink="products">products</a></li>
-        <li style="cursor: pointer;">
+        <li style="cursor: pointer">
           <a class="dropdown-item logout-btn" (click)="onLogOut()">Logout</a>
         </li>
       </ul>

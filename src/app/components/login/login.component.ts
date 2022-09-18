@@ -214,31 +214,37 @@ export class LoginComponent implements OnInit {
         },
       });
   }
+
   // Save User Info
   onSaveInfo(emailSign: string, passwordSign: string) {
 
     const formData: any = new FormData();
-    formData.append('role', 5);
+    formData.append('email', emailSign);
     formData.append('userImage', this.file);
-    formData.append('infoUser', this.saveUserInfoForm.value);
+    formData.append('region', this.saveUserInfoForm.value.region);
+    formData.append('city', this.saveUserInfoForm.value.city);
+    formData.append('country', this.saveUserInfoForm.value.country);
+    formData.append('role', this.saveUserInfoForm.value.role);
+    formData.append('specialMark', this.saveUserInfoForm.value.specialMark);
 
+    for ( const contact of this.saveUserInfoForm.value.contactType ) {
+      formData.append('contactType[type]',contact.type);
+      formData.append('contactType[value]',contact.value);
+  }
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'multipart/form-data',
       }),
     };
 
-    console.log(this.saveUserInfoForm);
     this.isLoading = true;
-    this.api.post(environment.base+'/site/save-user-info',formData,httpOptions)
+    this.api.post(environment.base+'/site/save-user-info',formData,{httpOptions})
       .subscribe({
         next: (userInfo: any) => {
           if (userInfo.status == 'ok') {
-            // TODO miss param
             this.isLoading = false;
             this.auth.autoLogin(emailSign, passwordSign);
           } else {
-            console.log(userInfo.details);
             this.isLoading = false;
             this.notify.errorNotification(userInfo.details, 'Save Info failed');
           }
@@ -258,7 +264,6 @@ export class LoginComponent implements OnInit {
 
 
   processFile(event: any) {
-    console.log(event);
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0] as File;
       this.upload(file);
