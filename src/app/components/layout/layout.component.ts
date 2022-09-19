@@ -1,6 +1,7 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Component, HostListener, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs/internal/Subscription';
 import { User } from 'src/app/interfaces/user.model';
 import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
@@ -14,8 +15,10 @@ import { environment } from 'src/environments/environment';
 export class LayoutComponent implements OnInit {
   currentYear?: number;
   windowScrolled: boolean = false;
-  user!: User;
+  // user!: User;
   userInfoForm: FormGroup = new FormGroup({});
+  userSubscription$?: Subscription;
+
   roles: string[] = [
     'Doctor',
     'Pharmacist',
@@ -33,24 +36,27 @@ export class LayoutComponent implements OnInit {
     private api: ApiService
   ) {}
   ngOnInit(): void {
+    this.auth.autoLogin();
     this.userDetails = this.auth.user$.getValue();
-    this.user = JSON.parse(localStorage.getItem('userData') || '{}');
+    this.userSubscription$ = this.auth.user$.subscribe((value) => {
+      this.userDetails = value;
+    });
+    console.log(this.userDetails);
+    // this.user = JSON.parse(localStorage.getItem('userData') || '{}');
 
     this.currentYear = new Date().getFullYear();
-    this.auth.autoLogin();
     // !Form user
     this.userInfoForm = this.fb.group({
-      userImage: [null],
       firstName: [
-        this.user.firstName,
+        this.userDetails.firstName,
         [Validators.required, Validators.maxLength(20)],
       ],
       lastName: [
-        this.user.lastName,
+        this.userDetails.lastName,
         [Validators.required, Validators.maxLength(20)],
       ],
       email: [
-        this.user.email,
+        this.userDetails.email,
         [
           Validators.required,
           Validators.email,
@@ -59,11 +65,11 @@ export class LayoutComponent implements OnInit {
           ),
         ],
       ],
-      region: [this.user.region],
-      city: [this.user.city],
-      country: [this.user.country],
-      role: [this.user.role],
-      specialMark: [this.user.specialMark],
+      region: [this.userDetails.region],
+      city: [this.userDetails.city],
+      country: [this.userDetails.country],
+      role: [this.userDetails.role],
+      specialMark: [this.userDetails.specialMark],
     });
   }
 
@@ -83,7 +89,7 @@ export class LayoutComponent implements OnInit {
 
   onUpdateUser() {
     const formData: any = new FormData();
-    formData.append('id', this.user.id);
+    formData.append('id', this.userDetails.id);
     formData.append('userImage', this.file);
     formData.append('email', this.userInfoForm.value.email);
     formData.append('firstName', this.userInfoForm.value.firstName);
@@ -104,10 +110,10 @@ export class LayoutComponent implements OnInit {
       })
       .subscribe((res: any) => {
         if (res.status == 'ok') {
-          this.auth.user$.next(res.user);
+          // this.auth.user$.next(res.user);
           localStorage.setItem('userData', JSON.stringify(res.user));
-          this.userDetails = this.auth.user$.getValue();
-          this.user.userImage=this.userDetails.img
+          this.userDetails = res.user;
+          this.userDetails.userImage = res.user.img;
         } else {
           console.log(res);
         }

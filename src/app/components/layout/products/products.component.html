@@ -10,14 +10,24 @@
 </div>
 
 <div class="container select">
-  <select class="form-select mb-3" aria-label="Category Select" #cate (change)="cateAllMedicine(cate.value)">
+  <select
+    class="form-select mb-3"
+    aria-label="Category Select"
+    #cate
+    (change)="cateAllMedicine(cate.value)"
+  >
     <option selected>Choose Category</option>
     <option *ngFor="let category of categories" [value]="category.id">
       {{ category.name }}
     </option>
   </select>
 
-  <select class="form-select" aria-label="Pharmaceutical Form Select" #pharme (change)="pharmeAllMedicine(pharme.value)">
+  <select
+    class="form-select"
+    aria-label="Pharmaceutical Form Select"
+    #pharme
+    (change)="pharmeAllMedicine(pharme.value)"
+  >
     <option selected>Choose Pharmaceutical Form</option>
     <option *ngFor="let pharm of pharmaceuticalForms" [value]="pharm.id">
       {{ pharm.name }}
@@ -76,14 +86,18 @@
       </div>
       <hr />
       <div class="card-foot">
-        <p>
+        <div>
           Category Form:
-          <span *ngFor="let catey of medicine.categories">{{ catey.name }}</span>
-          PharmaceuticalForm:<span
-            *ngFor="let pharmey of medicine.pharmaceuticalForms"
-            >{{ pharmey.name }}</span
-          >
-        </p>
+          <div *ngFor="let catey of medicine.categories">{{
+            catey.name
+          }}</div>
+        </div>
+        <div>
+          PharmaceuticalForm:
+          <div *ngFor="let pharmey of medicine.pharmaceuticalForms">{{
+            pharmey.name
+          }}</div>
+        </div>
       </div>
     </div>
   </div>

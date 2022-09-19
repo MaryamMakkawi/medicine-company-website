@@ -49,7 +49,7 @@ export class HomeComponent implements OnInit {
   options: AnimationOptions = {
     path: '../../../../assets/images/medicine-pills.json',
   };
-
+  
   constructor(private api: ApiService, private notify: NotifierService) {}
   ngOnInit(): void {
     this.currentDate = new Date().getDate();
