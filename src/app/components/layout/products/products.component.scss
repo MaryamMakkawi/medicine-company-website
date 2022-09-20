@@ -12,13 +12,15 @@ p {
 }
 .card {
   width: 250px;
-  height: fit-content;
+  height: 420px;
   background-color: #f4ecff;
   border-radius: 20px;
   display: flex;
   flex-direction: column;
+  max-height: 420px;
   padding: 20px 15px;
   margin-top: 20px;
+  overflow-y: clip;
 }
 .box-1 {
   // width: 100%;

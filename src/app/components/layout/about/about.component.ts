@@ -10,20 +10,109 @@ import { ApiService } from 'src/app/services/api.service';
   styleUrls: ['./about.component.scss'],
 })
 export class AboutComponent implements OnInit {
-  companyInfo!: CompanyInfo|undefined;
+  companyInfo!: any;
+
   constructor(private api: ApiService) {}
 
   ngOnInit(): void {
-    this.api
-      .get('http://localhost/aphamea_project/web/index.php/company/get?id=1')
-      .subscribe({
-        next: (res: any) => {
-          if (res.status == 'ok') {
-            this.companyInfo = res.company;
-            console.log(this.companyInfo);
-          }
-        },
-      });
+    this.companyInfo =
+      {
+        description: 'its good company woow',
+        numOfEmployee: '500',
+        companyTeams: [
+          {
+            name: 'maryam',
+            position: 'front end ',
+            description: 'this is good employee',
+          },
+          {
+            name: 'amiera',
+            position: 'front end ',
+            description: 'this is good employee',
+          },
+          {
+            name: 'shoile',
+            position: 'front end ',
+            description: 'this is good employee',
+          },
+          {
+            name: 'maryam',
+            position: 'front end ',
+            description: 'this is good employee',
+          },
+          {
+            name: 'maryam',
+            position: 'front end ',
+            description: 'this is good employee',
+          },
+          {
+            name: 'majd',
+            position: 'backend  ',
+            description: 'this is good employee',
+          },
+          {
+            name: 'hiba',
+            position: 'fllutter',
+            description: 'this is good employee',
+          },
+          {
+            name: 'zina',
+            position: 'front end ',
+            description: 'this is good employee',
+          },
+          {
+            name: 'ali',
+            position: 'front end ',
+            description: 'this is good employee',
+          },
+          {
+            name: 'ola',
+            position: 'front end ',
+            description: 'this is good employee',
+          },
+          {
+            name: 'ali',
+            position: 'front end ',
+            description: 'this is good employee',
+          },
+          {
+            name: 'ali',
+            position: 'front end ',
+            description: 'this is good employee',
+          },
+          {
+            name: 'ali',
+            position: 'front end ',
+            description: 'this is good employee',
+          },
+          {
+            name: 'hayat',
+            position: 'front end ',
+            description: 'this is good employee',
+          },
+          {
+            name: 'ali',
+            position: 'front end ',
+            description: 'this is good employee',
+          },
+          {
+            name: 'mounzer',
+            position: 'front end ',
+            description: 'this is good employee',
+          },
+        ],
+      }
+
+    // this.api
+    //   .get('http://localhost/aphamea_project/web/index.php/company/get?id=1')
+    //   .subscribe({
+    //     next: (res: any) => {
+    //       if (res.status == 'ok') {
+    //         this.companyInfo = res.company;
+    //         console.log(this.companyInfo);
+    //       }
+    //     },
+    //   });
   }
   team: AnimationOptions = {
     path: '../../../../assets/lottieFiles/team-blue.json',
@@ -32,7 +121,6 @@ export class AboutComponent implements OnInit {
     path: '../../../../assets/lottieFiles/about-us.json',
   };
 }
-
 
 // {
 //   "id": 1,
