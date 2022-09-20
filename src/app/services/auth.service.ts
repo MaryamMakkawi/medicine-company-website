@@ -124,7 +124,7 @@ export class AuthService {
         firstName: string;
         lastName: string;
         id: number;
-        userImage: string;
+        img: string;
         regionId: number;
         cityId: number;
         countryId: number;
@@ -142,7 +142,7 @@ export class AuthService {
         userData.firstName,
         userData.lastName,
         userData.id,
-        userData.userImage,
+        userData.img,
         userData.regionId,
         userData.cityId,
         userData.countryId,

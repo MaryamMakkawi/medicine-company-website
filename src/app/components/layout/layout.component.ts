@@ -65,9 +65,9 @@ export class LayoutComponent implements OnInit {
           ),
         ],
       ],
-      region: [this.userDetails.region],
-      city: [this.userDetails.city],
-      country: [this.userDetails.country],
+      regionId: [this.userDetails.regionId],
+      cityId: [this.userDetails.cityId],
+      countryId: [this.userDetails.countryId],
       role: [this.userDetails.role],
       specialMark: [this.userDetails.specialMark],
     });
@@ -94,9 +94,9 @@ export class LayoutComponent implements OnInit {
     formData.append('email', this.userInfoForm.value.email);
     formData.append('firstName', this.userInfoForm.value.firstName);
     formData.append('lastName', this.userInfoForm.value.lastName);
-    formData.append('region', this.userInfoForm.value.region);
-    formData.append('city', this.userInfoForm.value.city);
-    formData.append('country', this.userInfoForm.value.country);
+    formData.append('regionId', this.userInfoForm.value.regionId);
+    formData.append('cityId', this.userInfoForm.value.cityId);
+    formData.append('countryId', this.userInfoForm.value.countryId);
     formData.append('role', this.userInfoForm.value.role);
     formData.append('specialMark', this.userInfoForm.value.specialMark);
     const httpOptions = {
@@ -134,4 +134,46 @@ export class LayoutComponent implements OnInit {
   onLogOut() {
     this.auth.logout();
   }
+
+  // START countries - cities - regions
+  countries = { id: '', nameAr: '', nameEn: '' };
+  cities: any[] = [];
+  regions: any[] = [];
+  getCountries() {
+    this.api
+      .get(environment.base + `/area/get-countries`)
+      .subscribe((res: any) => {
+        if (res.status === 'ok') {
+          this.countries = res.countries;
+        } else {
+          console.log(res);
+        }
+      });
+  }
+  getCities() {
+    this.api
+      .get(environment.base + `/area/get-cities`)
+      .subscribe((res: any) => {
+        if (res.status === 'ok') {
+          this.cities = res.cities;
+        } else {
+          console.log(res);
+        }
+      });
+  }
+  onSelectCity(e: any) {
+    this.getRegions(e.target.value);
+  }
+  getRegions(id: number) {
+    this.api
+      .get(environment.base + `/area/get-regions?cityId=` + id)
+      .subscribe((res: any) => {
+        if (res.status === 'ok') {
+          this.regions = res.regions;
+        } else {
+          console.log(res);
+        }
+      });
+  }
+  // DONE countries - cities - regions
 }

@@ -42,7 +42,7 @@
           >
         </li>
       </ul>
-      <div class="user-profile">
+      <div class="user-profile" (click)="getCountries(); getCities()">
         <div
           class="dropdown-toggle"
           data-bs-toggle="dropdown"
@@ -51,7 +51,8 @@
           <img
             class="user-img"
             src="{{
-              userDetails.userImage || '../../../assets/images/avatar-default.jpg'
+              userDetails.userImage ||
+                '../../../assets/images/avatar-default.jpg'
             }}"
           />
         </div>
@@ -60,7 +61,8 @@
             <img
               class="user-img"
               src="{{
-                userDetails.userImage || '../../../assets/images/avatar-default.jpg'
+                userDetails.userImage ||
+                  '../../../assets/images/avatar-default.jpg'
               }}"
             />
             <div class="user-info">
@@ -71,9 +73,9 @@
               >
             </div>
           </div>
-          <li><a class="dropdown-item">Action</a></li>
+          <!-- <li><a class="dropdown-item">Action</a></li>
           <li><a class="dropdown-item">Another action</a></li>
-          <li><a class="dropdown-item">Something else here</a></li>
+          <li><a class="dropdown-item">Something else here</a></li> -->
           <li><hr class="dropdown-divider" /></li>
           <li>
             <a class="dropdown-item logout-btn" (click)="onLogOut()">Logout</a>
@@ -216,37 +218,12 @@
             <!-- Role -->
             <label for="inputRole" class="form-label">Role</label>
             <select id="inputRole" class="form-select" formControlName="role">
-              <option selected>Choose...</option>
               <option *ngFor="let role of roles; let i = index" [value]="i">
                 {{ role }}
               </option>
             </select>
             <!--Region & City & Country  -->
             <div class="d-flex mt-3">
-              <!-- Region -->
-              <label for="inputRegion" class="form-label me-2">Region</label>
-              <select
-                id="inputRegion"
-                class="form-select"
-                formControlName="region"
-              >
-                <option selected>Choose...</option>
-                <option>m</option>
-                <option>m</option>
-                <option>m</option>
-                <option>m</option>
-              </select>
-
-              <!-- City -->
-              <label for="inputCity" class="form-label ms-2 me-2">City</label>
-              <select id="inputCity" class="form-select" formControlName="city">
-                <option selected>Choose...</option>
-                <option>m</option>
-                <option>m</option>
-                <option>m</option>
-                <option>m</option>
-              </select>
-
               <!-- Country -->
               <label for="inputCountry" class="form-label ms-2 me-2"
                 >Country</label
@@ -254,13 +231,45 @@
               <select
                 id="inputCountry"
                 class="form-select"
-                formControlName="country"
+                formControlName="countryId"
               >
-                <option selected>Choose...</option>
-                <option>m</option>
-                <option>m</option>
-                <option>m</option>
-                <option>m</option>
+                <option
+                  [value]="countries.id"
+                  [selected]="this.userDetails.countryId == countries.id"
+                >
+                  {{ countries.nameAr }}
+                </option>
+              </select>
+              <!-- City -->
+              <label for="inputCity" class="form-label ms-2 me-2">City</label>
+              <select
+                (change)="onSelectCity($event)"
+                id="inputCity"
+                class="form-select"
+                formControlName="cityId"
+              >
+                <option
+                  *ngFor="let city of cities | slice:1:cities.length"
+                  [value]="city.id"
+                  [selected]="city.id == 1"
+                >
+                  {{ city.nameAr }}
+                </option>
+              </select>
+              <!-- Region -->
+              <label for="inputRegion" class="form-label me-2">Region</label>
+              <select
+                id="inputRegion"
+                class="form-select"
+                formControlName="regionId"
+              >
+                <option
+                  *ngFor="let region of regions"
+                  [value]="region.id"
+                  [selected]="this.userDetails.regionId == region.id"
+                >
+                  {{ region.regionAr }}
+                </option>
               </select>
             </div>
             <!-- Special Mark-->
@@ -287,7 +296,7 @@
             Close
           </button>
           <button
-          data-bs-dismiss="modal"
+            data-bs-dismiss="modal"
             type="button"
             class="btn btn-primary"
             (click)="onUpdateUser()"
@@ -322,7 +331,8 @@
         <div class="user-img">
           <img
             src="{{
-              userDetails.userImage || '../../../assets/images/avatar-default.jpg'
+              userDetails.userImage ||
+                '../../../assets/images/avatar-default.jpg'
             }}"
           />
         </div>
