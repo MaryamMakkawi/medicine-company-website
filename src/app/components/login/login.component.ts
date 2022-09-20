@@ -45,10 +45,12 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private auth: AuthService,
     private notify: NotifierService,
-    private api:ApiService
+    private api: ApiService
   ) {}
 
   ngOnInit(): void {
+    this.getCountries();
+    this.getCities();
     // signupForm First
     this.signupForm = this.fb.group(
       {
@@ -81,12 +83,11 @@ export class LoginComponent implements OnInit {
 
     // saveUserInfoForm Second
     this.saveUserInfoForm = this.fb.group({
-      region: [''],
-      city: [''],
-      country: [''],
+      regionId: [''],
+      cityId: [''],
+      countryId: [''],
       role: [''],
       specialMark: [''],
-      img: [null],
       contactType: this.fb.array([
         this.fb.group({
           type: [''],
@@ -156,8 +157,6 @@ export class LoginComponent implements OnInit {
     this.auth.login(email, password).subscribe({
       next: (user: any) => {
         if (user.status == 'ok') {
-          console.log(this.loginForm);
-          console.log(user);
           this.isLoading = false;
           this.auth.handleAuth(
             user.userInfo.accessToken,
@@ -178,7 +177,6 @@ export class LoginComponent implements OnInit {
             user.userInfo.Contacts
           );
         } else {
-          console.log(user.details);
           this.isLoading = false;
           this.notify.errorNotification(user.details, 'login failed');
         }
@@ -202,12 +200,9 @@ export class LoginComponent implements OnInit {
       .subscribe({
         next: (user: any) => {
           if (user.status == 'ok') {
-            console.log(signupForm);
-            console.log(user);
             this.isLoading = false;
             this.toggleCompleteInfoForm = true;
           } else {
-            console.log(user.details);
             this.isLoading = false;
             this.notify.errorNotification(user.details.email, 'Signup failed');
           }
@@ -217,20 +212,19 @@ export class LoginComponent implements OnInit {
 
   // Save User Info
   onSaveInfo(emailSign: string, passwordSign: string) {
-
     const formData: any = new FormData();
     formData.append('email', emailSign);
     formData.append('userImage', this.file);
-    formData.append('region', this.saveUserInfoForm.value.region);
-    formData.append('city', this.saveUserInfoForm.value.city);
-    formData.append('country', this.saveUserInfoForm.value.country);
+    formData.append('regionId', this.saveUserInfoForm.value.regionId);
+    formData.append('cityId', this.saveUserInfoForm.value.cityId);
+    formData.append('countryId', this.saveUserInfoForm.value.countryId);
     formData.append('role', this.saveUserInfoForm.value.role);
     formData.append('specialMark', this.saveUserInfoForm.value.specialMark);
 
-    for ( const contact of this.saveUserInfoForm.value.contactType ) {
-      formData.append('contactType[type]',contact.type);
-      formData.append('contactType[value]',contact.value);
-  }
+    for (const contact of this.saveUserInfoForm.value.contactType) {
+      formData.append('contactType[type]', contact.type);
+      formData.append('contactType[value]', contact.value);
+    }
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'multipart/form-data',
@@ -238,7 +232,10 @@ export class LoginComponent implements OnInit {
     };
 
     this.isLoading = true;
-    this.api.post(environment.base+'/site/save-user-info',formData,{httpOptions})
+    this.api
+      .post(environment.base + '/site/save-user-info', formData, {
+        httpOptions,
+      })
       .subscribe({
         next: (userInfo: any) => {
           if (userInfo.status == 'ok') {
@@ -262,7 +259,6 @@ export class LoginComponent implements OnInit {
     );
   }
 
-
   processFile(event: any) {
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0] as File;
@@ -273,4 +269,46 @@ export class LoginComponent implements OnInit {
   upload(fileTest: File) {
     this.file = fileTest;
   }
+
+  // START countries - cities - regions
+  countries = { id: '', nameAr: '', nameEn: '' };
+  cities: any = [];
+  regions: any = [];
+  getCountries() {
+    this.api
+      .get(environment.base + `/area/get-countries`)
+      .subscribe((res: any) => {
+        if (res.status === 'ok') {
+          this.countries = res.countries;
+        } else {
+          console.log(res);
+        }
+      });
+  }
+  getCities() {
+    this.api
+      .get(environment.base + `/area/get-cities`)
+      .subscribe((res: any) => {
+        if (res.status === 'ok') {
+          this.cities = res.cities;
+        } else {
+          console.log(res);
+        }
+      });
+  }
+  onSelectCity(e: any) {
+    this.getRegions(e.target.value);
+  }
+  getRegions(id: number) {
+    this.api
+      .get(environment.base + `/area/get-regions?cityId=` + id)
+      .subscribe((res: any) => {
+        if (res.status === 'ok') {
+          this.regions = res.regions;
+        } else {
+          console.log(res);
+        }
+      });
+  }
+  // DONE countries - cities - regions
 }

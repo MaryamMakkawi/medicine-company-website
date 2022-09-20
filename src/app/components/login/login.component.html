@@ -7,7 +7,7 @@
     <form
       *ngIf="!toggleCompleteInfoForm"
       [formGroup]="signupForm"
-      class="px-1 px-sm-2 px-md-3 px-lg-5 "
+      class="px-1 px-sm-2 px-md-3 px-lg-5"
       (ngSubmit)="onSignup(signupForm)"
     >
       <h3>Create New Account</h3>
@@ -179,7 +179,6 @@
           type="file"
           name="file-input"
           id="file-input"
-          formControlName="img"
           class="file-input__input"
           (change)="processFile($event)"
         />
@@ -202,34 +201,24 @@
       <!--Region & City & Country  -->
       <div class="mt-3">Position:</div>
       <div class="d-flex mt-3">
-        <!-- Region -->
-        <label for="inputRegion" class="form-label me-2">Region</label>
-        <select id="inputRegion" class="form-select" formControlName="region">
-          <option selected>Choose...</option>
-          <option value="m">m</option>
-          <option value="m">m</option>
-          <option value="m">m</option>
-          <option value="m">m</option>
-        </select>
-
-        <!-- City -->
-        <label for="inputCity" class="form-label ms-2 me-2">City</label>
-        <select id="inputCity" class="form-select" formControlName="city">
-          <option selected>Choose...</option>
-          <option value="m">m</option>
-          <option value="m">m</option>
-          <option value="m">m</option>
-          <option value="m">m</option>
-        </select>
-
         <!-- Country -->
         <label for="inputCountry" class="form-label ms-2 me-2">Country</label>
-        <select id="inputCountry" class="form-select" formControlName="country">
-          <option selected>Choose...</option>
-          <option value="m">m</option>
-          <option value="m">m</option>
-          <option value="m">m</option>
-          <option value="m">m</option>
+        <select id="inputCountry" class="form-select" formControlName="countryId">
+          <option [value]="countries.id">{{ countries.nameAr }}</option>
+        </select>
+        <!-- City -->
+        <label for="inputCity" class="form-label ms-2 me-2">City</label>
+        <select (change)="onSelectCity($event)" id="inputCity" class="form-select" formControlName="cityId">
+          <option *ngFor="let city of cities" [value]="city.id">
+            {{ city.nameAr }}
+          </option>
+        </select>
+        <!-- Region -->
+        <label for="inputRegion" class="form-label me-2">Region</label>
+        <select id="inputRegion" class="form-select" formControlName="regionId">
+          <option *ngFor="let region of regions" [value]="region.id">
+            {{ region.regionAr }}
+          </option>
         </select>
       </div>
       <!-- Special Mark-->
@@ -247,14 +236,16 @@
       </div>
 
       <!-- Contact  -->
-      <div class=" mt-3">
+      <div class="mt-3">
         <!-- Contact Select Type-->
         <div formArrayName="contactType">
           <ng-container
-            *ngFor="let contact of contactType?.controls; let i = index">
+            *ngFor="let contact of contactType?.controls; let i = index"
+          >
             <div class="mb-3 d-flex" [formGroupName]="i">
               <label for="inputContact" class="form-label ms-2 me-2"
-                >Contact</label>
+                >Contact</label
+              >
               <select
                 id="inputContact"
                 class="form-select me-2 ms-2 contact"
@@ -272,17 +263,24 @@
                   formControlName="value"
                 />
                 <!-- Phone Contact -->
-                <input type="number" class="form-control" placeholder="Phone" formControlName="value" />
+                <input
+                  type="number"
+                  class="form-control"
+                  placeholder="Phone"
+                  formControlName="value"
+                />
               </div>
 
-              <button  type="button" class="add-input" (click)="newContactType()">
+              <button
+                type="button"
+                class="add-input"
+                (click)="newContactType()"
+              >
                 <i class="bi bi-plus"></i>
               </button>
             </div>
-
           </ng-container>
         </div>
-
       </div>
 
       <button

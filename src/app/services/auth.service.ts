@@ -113,7 +113,6 @@ export class AuthService {
   }
 
   autoLogin(email?: string, password?: string) {
-    console.log('Im Here!');
     if (!localStorage.getItem('userData') && !(email && password)) {
       return;
     }
@@ -125,7 +124,7 @@ export class AuthService {
         firstName: string;
         lastName: string;
         id: number;
-        img: string;
+        userImage: string;
         regionId: number;
         cityId: number;
         countryId: number;
@@ -143,7 +142,7 @@ export class AuthService {
         userData.firstName,
         userData.lastName,
         userData.id,
-        userData.img,
+        userData.userImage,
         userData.regionId,
         userData.cityId,
         userData.countryId,
